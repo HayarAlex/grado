@@ -68,6 +68,7 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{{ route('category.index') }}">Categorias</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('sport.index') }}">Deportes</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('almacen.index') }}">Almacenes</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('productType.index') }}">Tipo producto</a></li>
         </ul>
       </div>

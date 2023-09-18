@@ -110,6 +110,14 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::put('/Deportes/activar/{id}','SportController@activate')->name('sport.active');
 	Route::put('/Deportes/eliminar/{id}','SportController@delete')->name('sport.delete');
 	Route::put('/Deportes/Actualizar/{id}','SportController@update')->name('sport.update');
+	// rutas almacenes
+	Route::get('Almacenes', 'AlmacenController@index')->name('almacen.index');
+	Route::post('/Almacenes/save', 'AlmacenController@store')->name('almacen.store');
+	Route::put('/Almacenes/desactivar/{id}','AlmacenController@deactivate')->name('almacen.deactive');
+	Route::put('/Almacenes/activar/{id}','AlmacenController@activate')->name('almacen.active');
+	Route::put('/Almacenes/eliminar/{id}','AlmacenController@delete')->name('almacen.delete');
+	Route::put('/Almacenes/Actualizar/{id}','AlmacenController@update')->name('almacen.update');
+
 	// rutas equipos
 	Route::get('Equipos', 'TeamController@index')->name('team.index');
 	Route::post('/Equipos/save', 'TeamController@store')->name('team.store');
