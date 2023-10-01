@@ -83,7 +83,12 @@
 				            <div class="form-group row">
 				              <div class="col-sm-12">
 				                <label for=""><a style="color: red">*</a>Unidad de negocio:</label>
-				                <input id="pat" type="text" name="uneg" class="form-control" placeholder="Ingrese nombre" onclick="clean()" />
+				                <select id="uneg" name="uneg" class="form-control">
+                                    <option value="">Seleccionar U. negocio</option>
+                                    @foreach($unidades as $uni)
+                                        <option value="{{ $uni->uneg_id}}">{{ $uni->uneg_name }}</option>
+                                    @endforeach
+                                </select>
 				                @if($errors->has('uneg'))
 				                  <label for="" style="color: red;">{{ $errors->first('uneg') }}</label>
 				                @endif

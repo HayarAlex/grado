@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Almacen;
+use App\Unegocio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -15,9 +16,13 @@ class AlmacenController extends Controller
      */
     public function index()
     {
+        $unidades = Unegocio::where('uneg_state', 1)
+                    ->orderBy('uneg_id', 'desc')
+                    ->get();
         $almacenes = Almacen::orderBy('alm_id','desc')->paginate(5);
         return view('Almacenes.list',[
-            'almacenes' => $almacenes
+            'almacenes' => $almacenes,
+            'unidades' => $unidades
         ]);
     }
 
