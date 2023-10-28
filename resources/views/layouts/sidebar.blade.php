@@ -87,6 +87,18 @@
       </div>
     </li>
     <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#distribution" aria-expanded="false" aria-controls="distribution">
+      <i class="mdi mdi-pen menu-icon"></i>
+      <span class="menu-title">Distribuciones</span>
+      <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="distribution">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.index') }}">Pedidos Sucursal</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#gest-user" aria-expanded="false" aria-controls="gest-user">
       <i class="mdi mdi-account-circle menu-icon"></i>
       <span class="menu-title">Gestion de usuarios</span>

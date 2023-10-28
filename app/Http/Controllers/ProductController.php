@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\ProductType;
-use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class ProductController extends Controller
 {
@@ -16,7 +15,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('Products.list');
+        //
+        $productos = Product::orderBy('prod_id','desc')->paginate(10);
+        return view('Products.list',['products' => $productos]);
     }
 
     /**
@@ -26,12 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $productTypes = ProductType::orderBy('product_type_id','desc');
-        $categories = Category::orderBy('category_id','desc');
-        return view('Products.new',[
-            'productTypes' => $productTypes,
-            'categories' => $categories
-        ]);
+        //
     }
 
     /**

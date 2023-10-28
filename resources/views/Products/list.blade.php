@@ -25,32 +25,36 @@
                   <table id="order-listing" class="table table-striped">
                       <thead>
                           <tr>
-                              <th class="text-center">Nombre</th>
-                              <th class="text-center">Tipo</th>
-                              <th class="text-center">Medida</th>
-                              <th class="text-center">Cantidad</th>
-                              <th class="text-center">Precio</th>
+                              <th class="text-center">Id</th>
+                              <th class="text-center">Codigo</th>
+                              <th class="text-center">Descripcion</th>
+                              <th class="text-center">U/M</th>
                               <th class="text-center">Estado</th>
                               <th class="text-center">Acción</th>
                           </tr>
                       </thead>
                       <tbody>
+                      @foreach($products as $prod)
                           <tr>
-                            <td class="text-center">mangera diesel</td>
-                            <td class="text-center">negra</td>
-                            <td class="text-center">8 mm</td>
-                            <td class="text-center">5 rollos</td>
-                            <td class="text-center">125 p/r</td>
-                            <td class="text-center"><label class="badge badge-success">Activo</label></td>
+                            <td class="text-center">{{$prod->prod_id}}</td>
+                            <td class="text-center">{{$prod->prod_cod}}</td>
+                            <td class="text-center">{{$prod->prod_desc}}</td>
+                            <td class="text-center">{{$prod->prod_uni}}</td>
+                            @if($prod->prod_state == 1 )
+                              <td class="text-center"><label class="badge badge-success">Activo</label></td>
+                            @else
+                              <td class="text-center"><label class="badge badge-danger">Inactivo</label></td>
+                            @endif
                             <td style="width: 10px">
                               <a href="#" id="br" class="btn btn-danger delete-modal btn-sm " data-toggle="modal" data-target="#exampleModal-2"><i class="mdi mdi-close white" ></i></a>
                               <a class="btn btn-primary btn-sm" id="br" href="#" ><i class="mdi mdi-border-color white" ></i></a>
                               <a class="btn btn-dark btn-sm elim-modal" id="br" href="#"  data-toggle="modal" data-target="#exampleModal-2"><i class="mdi mdi-delete white" ></i></a>
                             </td>
                           </tr>
+                        @endforeach
                       </tbody>
                   </table><br>
-                  {{-- <div class="pagination d-flex flex-wrap justify-content-center">{{ $customers->links() }}</div> --}}
+                  <div class="pagination d-flex flex-wrap justify-content-center">{{ $products->links() }}</div>
               </div>
           </div>
       </div>

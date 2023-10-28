@@ -17,6 +17,18 @@
     <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="../../images/favicon.png" />
+
+    <link rel="stylesheet" href="../../../../vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../../../vendors/base/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../../../vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="../../../../vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../../../css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../../../images/favicon.png" />
   </head>
   <body>
     <div class="container-scroller">
@@ -78,6 +90,7 @@
     <!-- Custom js for this page-->
     <script src="../../../../js/toastDemo.js"></script>
     <script src="../../../../js/chart.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     @section('script')
     @show
   </body>

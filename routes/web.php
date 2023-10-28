@@ -128,4 +128,11 @@ Route::group(['middleware' => ['auth']], function(){
 
 	//rutas ventas
 	Route::get('Venta', 'SalesController@index')->name('sale.index');
+	// rutas Distribucion
+	Route::get('Distribucion', 'DistributionController@index')->name('distribucion.index');
+	Route::get('/Distribucion/{id}', 'DistributionController@newped')->name('distribucion.unidad');
+	Route::post('/Distribucion/save/', 'DistributionController@store')->name('distribucion.store');
+	Route::get('/Distribucion/Detalle/{id}', 'DistributionController@detped')->name('distribucion.detpedido');
+	Route::post('/Distribucion/savedet/', 'DistributionController@storedet')->name('distribucion.storedet');
+	Route::put('/Distribucion/confirm/','DistributionController@activate')->name('distribucion.active');
 });
