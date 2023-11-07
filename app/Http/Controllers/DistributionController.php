@@ -24,13 +24,36 @@ class DistributionController extends Controller
             'unidades' => $unidades
         ]);
     }
+    public function indexadm()
+    {
+        $unidades = Unegocio::where('uneg_state', 1)
+                    ->orderBy('uneg_id', 'desc')
+                    ->paginate(5);
+        return view('Distribuciones.admunit',[
+            'unidades' => $unidades
+        ]);
+    }
     public function newped($id)
     {
         $unidades = Unegocio::findOrFail($id);
         $pedidos = Distribution::where('dis_uneg', $id)
+                    ->where('dis_state',0)
                     ->orderBy('dis_id', 'desc')
                     ->paginate(5);
         return view('Distribuciones.new',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos
+        ]);
+    }
+
+    public function admped($id)
+    {
+        $unidades = Unegocio::findOrFail($id);
+        $pedidos = Distribution::where('dis_uneg', $id)
+                    ->where('dis_state',0)
+                    ->orderBy('dis_id', 'desc')
+                    ->paginate(5);
+        return view('Distribuciones.admpedidos',[
             'unidades' => $unidades,
             'pedidos' => $pedidos
         ]);
@@ -58,6 +81,13 @@ class DistributionController extends Controller
         $dis->update();
         return Distribution::orderBy("dis_id")->get();
     }
+    public function cancelar(Request $request)
+    {
+        $dis = Distribution::findOrFail($request->idped);
+        $dis->dis_state = 1;
+        $dis->update();
+        return Distribution::orderBy("dis_id")->get();
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -80,7 +110,7 @@ class DistributionController extends Controller
         $dis = new Distribution;
         $dis->dis_uneg = $request->uneg;
         $dis->dis_nombre = 'Pedido';
-        $dis->dis_state = 1;
+        $dis->dis_state = 0;
         $dis->dis_state_env = 0;
         $dis->dis_state_ate = 0;
         $dis->fecha_soli = date('Y-m-d');

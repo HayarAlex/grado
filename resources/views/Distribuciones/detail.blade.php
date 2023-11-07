@@ -68,8 +68,8 @@
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmped()" style="color:white">Confirmar</a>
-                                    <a class="btn btn-danger font-weight-medium auth-form-btn btn-sm" onclick="senddet()" style="color:white">cancelar</a>
-                                    <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="senddet()" style="color:white">Volver</a>
+                                    <a class="btn btn-danger font-weight-medium auth-form-btn btn-sm" onclick="cancel()" style="color:white">cancelar</a>
+                                    <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
                                 </div>
                             </div>
                         </div>
@@ -208,10 +208,10 @@
             })
             .catch(function (error){
                 $.toast({
-                    heading: 'Operación exitosa!',
-                    text: 'Se agrego el registro correctamente.',
+                    heading: 'Alerta!',
+                    text: 'Algo salio mal en el registro.',
                     showHideTransition: 'slide',
-                    icon: 'success',
+                    icon: 'warning',
                     loaderBg: '#f96868',
                     position: 'bottom-right'
                 })
@@ -238,14 +238,47 @@
             })
             .catch(function (error){
                 $.toast({
+                    heading: 'Alerta!',
+                    text: 'Algo salio mal en la confirmacion.',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#f96868',
+                    position: 'bottom-right'
+                })
+            });
+    }
+    function cancel(){
+        var obj={
+            idped:codigo_pedido
+        };
+        axios.put('/Distribucion/cancel/', obj)
+            .then(function (response) {
+                //console.log('ok');
+                $.toast({
                     heading: 'Operación exitosa!',
-                    text: 'Se agrego el registro correctamente.',
+                    text: 'Se elimino el registro correctamente.',
                     showHideTransition: 'slide',
                     icon: 'success',
                     loaderBg: '#f96868',
                     position: 'bottom-right'
                 })
+                console.log(response.data);
+                window.location.href="/Distribucion/"+codigo_uidad;
+                //location.reload();
+            })
+            .catch(function (error){
+                $.toast({
+                    heading: 'Alerta!',
+                    text: 'Algo salio mal en la cancelacion.',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#f96868',
+                    position: 'bottom-right'
+                })
             });
+    }
+    function volver() {
+        window.location.href="/Distribucion/"+codigo_uidad;
     }
 </script>
 @endsection

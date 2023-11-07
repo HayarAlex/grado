@@ -95,6 +95,7 @@
       <div class="collapse" id="distribution">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.index') }}">Pedidos Sucursal</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.indexadm') }}">Adm de Pedidos</a></li>
         </ul>
       </div>
     </li>

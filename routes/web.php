@@ -135,4 +135,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/Distribucion/Detalle/{id}', 'DistributionController@detped')->name('distribucion.detpedido');
 	Route::post('/Distribucion/savedet/', 'DistributionController@storedet')->name('distribucion.storedet');
 	Route::put('/Distribucion/confirm/','DistributionController@activate')->name('distribucion.active');
+	Route::put('/Distribucion/cancel/','DistributionController@cancelar')->name('distribucion.cancel');
+	// administracion de pedidos-distribucion
+	Route::get('AdminDistribucion', 'DistributionController@indexadm')->name('distribucion.indexadm');
+	Route::get('/AdminDistribucion/{id}', 'DistributionController@admped')->name('distribucion.pedidos');
 });
