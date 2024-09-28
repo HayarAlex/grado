@@ -32,7 +32,7 @@
             //element.addClass('active');
           //}
         }
-      }
+      
     }
 
     var current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');

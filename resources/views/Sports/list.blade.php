@@ -5,9 +5,9 @@
 	<div class="col-lg-7 grid-margin">
 	  <div class="card">
 	    <div class="card-body">
-	      <h4 class="card-title">Lista Deportes</h4>
+	      <h4 class="card-title">Lista Unidades de negocio</h4>
 	      <p class="card-description">
-	        Deportes
+	        Unidades de negocio
 	      </p>
 	      <div class="table-responsive">
 	        <table class="table">
@@ -22,17 +22,17 @@
 	          <tbody>
 	          	@foreach($sports as $sport)
 	            <tr>
-	              <td class="text-center">{{ $sport->sport_id }}</td>
-	              <td class="text-center">{{ $sport->description }}</td>
-	              	@if($sport->state == 1 )
+	              <td class="text-center">{{ $sport->uneg_id }}</td>
+	              <td class="text-center">{{ $sport->uneg_name }}</td>
+	              	@if($sport->uneg_state == 1 )
 	                  <td class="text-center"><label class="badge badge-success">Activo</label></td>
 	                @else
 	                  <td class="text-center"><label class="badge badge-danger">Inactivo</label></td>
 	                @endif
 	              <td style="width: 10px">
-	              	 <a href="#" id="br" class="btn {{ $sport->state?'btn-danger':'btn-success' }} state-modal btn-sm " data-id="{{ $sport->sport_id }}" data-state="{{ $sport->state }}" data-toggle="modal" data-target="#exampleModal-2"><i class="mdi {{ $sport->state?'mdi-close':'mdi-check' }} white" ></i></a>
-                      <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $sport->sport_id }}" data-state="{{ $sport->state }}" data-description="{{ $sport->description }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
-                      <a class="btn btn-dark btn-sm delete-modal" id="br" href="#" data-id="{{ $sport->sport_id }}" data-state="{{ $sport->state }}" data-toggle="modal" data-target="#exampleModal-2"><i class="mdi mdi-delete white" ></i></a>
+	              	 <a href="#" id="br" class="btn {{ $sport->uneg_state?'btn-danger':'btn-success' }} state-modal btn-sm " data-id="{{ $sport->uneg_id }}" data-state="{{ $sport->uneg_state }}" data-toggle="modal" data-target="#exampleModal-2"><i class="mdi {{ $sport->uneg_state?'mdi-close':'mdi-check' }} white" ></i></a>
+                      <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $sport->uneg_id }}" data-state="{{ $sport->uneg_state }}" data-description="{{ $sport->uneg_name }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
+                      <a class="btn btn-dark btn-sm delete-modal" id="br" href="#" data-id="{{ $sport->uneg_id }}" data-state="{{ $sport->state }}" data-toggle="modal" data-target="#exampleModal-2"><i class="mdi mdi-delete white" ></i></a>
 	              </td>
 	            </tr>
 	            {{-- modal acciones de camvio de estado y eliminacion --}}
@@ -52,7 +52,7 @@
 				              <p id="titulo-modal"></p>
 				            </div>
 				            <div class="modal-footer">
-				            	@if($sport->state == 1 )
+				            	@if($sport->uneg_state == 1 )
 				              	<button type="submit" id="boton-modal" class="not-desactivate"></button>
 				              	@else
 				              	<button type="submit" id="boton-modal" class="not-activate"></button>
@@ -75,7 +75,7 @@
 	<div class="col-lg-5 grid-margin">
 	  	<div class="card">
 	    	<div class="card-body">
-	      		<h4 class="card-title">Nuevo Deporte</h4><br>
+	      		<h4 class="card-title">Nueva Unidad de negocio</h4><br>
 	      		<form action="{{ route('sport.store')}}" method="post" enctype="multipart/from-data">
 	      			@csrf
 		      		<div class="row">
@@ -142,15 +142,15 @@
         var estado = $(this).data('state');
         let action;
         if(estado == 1){
-          action = "{{ url('/Deportes/desactivar') }}/" + $(this).data('id');
-          $('#tituloP-modal').text('Desactivar deporte');
+          action = "{{ url('/Unidad/desactivar') }}/" + $(this).data('id');
+          $('#tituloP-modal').text('Desactivar Unidad de negocio');
           $('#titulo-modal').text('¿Esta seguro de desactivar este registro?');
           $('#boton-modal').text('Desactivar');
           $('#boton-modal').attr('class','btn btn-danger');
           console.log('desactivar');          
         }else{
-          action = "{{ url('/Deportes/activar') }}/" + $(this).data('id');
-          $('#tituloP-modal').text('Activar deporte');
+          action = "{{ url('/Unidad/activar') }}/" + $(this).data('id');
+          $('#tituloP-modal').text('Activar Unidad de negocio');
           $('#titulo-modal').text('¿Esta seguro de activar este registro?');
           console.log('activar');
           $('#boton-modal').text('Activar');
@@ -163,8 +163,8 @@
         var estado = $(this).data('state');
         let action;
         if(estado == 1 ||estado == 0){
-          action = "{{ url('/Deportes/eliminar') }}/" + $(this).data('id');
-          $('#tituloP-modal').text('Eliminar deporte');
+          action = "{{ url('/Unidad/eliminar') }}/" + $(this).data('id');
+          $('#tituloP-modal').text('Eliminar Unidad de negocio');
           $('#titulo-modal').text('¿Esta seguro de eliminar este registro?');
           $('#boton-modal').text('Eliminar');
           $('#boton-modal').attr('class','btn btn-danger');
@@ -177,8 +177,8 @@
         var estado = $(this).data('state'); 
         let action;
         if(estado == 1 ||estado == 0){
-          action = "{{ url('/Deportes/Actualizar') }}/" + $(this).data('id');
-          $('#tituloE-modal').text('Actualizar deporte');
+          action = "{{ url('/Unidad/Actualizar') }}/" + $(this).data('id');
+          $('#tituloE-modal').text('Actualizar Unidad de negocio');
           $('#modal-descriptionC').val($(this).data('description'));
           $('#boton-modalE').text('Actualizar');
           $('#boton-modalE').attr('class','btn btn-primary');

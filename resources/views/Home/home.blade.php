@@ -5,7 +5,7 @@
     <div class="card">
       <div class="card-body">
         <div class="text-center">
-          <h4 class="card-title">Mas Vendido</h4>
+          <h4 class="card-title">Productos</h4>
         </div>
         <div id="sales" class="carousel slide dashboard-widget-carousel position-static pt-2" data-ride="carousel">
           <div class="carousel-inner">

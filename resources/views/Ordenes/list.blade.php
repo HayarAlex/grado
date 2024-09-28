@@ -14,62 +14,30 @@
 	          <thead>
 	            <tr>
 	              <th class="text-center">ID</th>
-	              <th class="text-center">Descripción</th>
+	              <th class="text-center">Lote</th>
+                <th class="text-center">Producto</th>
 	              <th class="text-center">Estado</th>
-				  <th class="text-center">Info</th>
 	              <th class="text-center">Acciones</th>
 	            </tr>
 	          </thead>
-	          <tbody>
-	          	@foreach($productTypes as $productType)
+            <tbody>
+            @foreach($ordenes as $order)
 	            <tr>
-	              <td class="text-center">{{ $productType->product_type_id }}</td>
-	              <td class="text-center">{{ $productType->description }}</td>
-	              	@if($productType->state == 1 )
+	              <td class="text-center">{{ $order->ord_id }}</td>
+	              <td class="text-center">{{ $order->ord_lot }}</td>
+                <td class="text-center">{{ $order->ord_prod }}</td>
+	              	@if($order->ord_state == 1 )
 	                  <td class="text-center"><label class="badge badge-success">Activo</label></td>
 	                @else
 	                  <td class="text-center"><label class="badge badge-danger">Inactivo</label></td>
 	                @endif
-				    <td class="text-center"><center><a class="text-center" style="color:#403969" href="{{ url('/Tipo-de-producto/'.$productType->product_type_id) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center></td>
 	              <td style="width: 10px">
-	              	 <a href="#" id="br" class="btn {{ $productType->state?'btn-danger':'btn-success' }} state-modal btn-sm " data-id="{{ $productType->product_type_id }}" data-state="{{ $productType->state }}" data-toggle="modal" data-target="#exampleModal-2"><i class="mdi {{ $productType->state?'mdi-close':'mdi-check' }} white" ></i></a>
-                      <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $productType->product_type_id }}" data-state="{{ $productType->state }}" data-description="{{ $productType->description }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
-                      <a class="btn btn-dark btn-sm delete-modal" id="br" href="#" data-id="{{ $productType->product_type_id }}" data-state="{{ $productType->state }}" data-toggle="modal" data-target="#exampleModal-2"><i class="mdi mdi-delete white" ></i></a>
+	              	 
 	              </td>
 	            </tr>
-	            {{-- modal acciones de camvio de estado y eliminacion --}}
-				<div class="modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
-				    <div class="modal-dialog" role="document">
-				      <div class="modal-content">
-				        <form action="" method="post" id="form-delete">
-				            @csrf
-				            @method('put')
-				            <div class="modal-header">
-				              <h5 class="modal-title" id="tituloP-modal"></h5>
-				              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				                <span aria-hidden="true">&times;</span>
-				              </button>
-				            </div>
-				            <div class="modal-body">
-				              <p id="titulo-modal"></p>
-				            </div>
-				            <div class="modal-footer">
-				            	@if($productType->state == 1 )
-				              	<button type="submit" id="boton-modal" class="not-desactivate"></button>
-				              	@else
-				              	<button type="submit" id="boton-modal" class="not-activate"></button>
-				              	@endif
-				              	<button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
-				            </div>
-				        </form>
-				      </div>
-				    </div>
-				</div>
-				{{-- end modal --}}
-	            @endforeach
-	          </tbody>
+            @endforeach
+            </tbody>
 	        </table><br>
-	        <div class="pagination d-flex flex-wrap justify-content-center">{{ $productTypes->links() }}</div>
 	      </div>
 	    </div>
 	  </div>
@@ -77,24 +45,65 @@
 	<div class="col-lg-5 grid-margin">
 	  	<div class="card">
 	    	<div class="card-body">
-	      		<h4 class="card-title">Nueva Linea de Produccion</h4><br>
-	      		<form action="{{ route('productType.store')}}" method="post" enctype="multipart/from-data">
-	      			@csrf
+	      		<h4 class="card-title">Nueva Orden de Produccion</h4><br>
+	      		<form>
+	      			
 		      		<div class="row">
 		      			<div class="col-md-12">
 				            <div class="form-group row">
 				              <div class="col-sm-12">
-				                <label for=""><a style="color: red">*</a>Descripción:</label>
-				                <input id="pat" type="text" name="description" class="form-control" placeholder="Ingrese descripción"/>
-				                @if($errors->has('description'))
-				                  <label for="" style="color: red;">{{ $errors->first('description') }}</label>
-				                @endif
+                        <label for=""><a style="color: red">*</a>Seleccionar producto:</label>
+                        <select id="prod" name="prod" class="sel1 js-example-basic-single w-100">
+                            <option value="0">Seleccione un producto</option>
+                            @foreach($productos as $prod)
+                                <option value="{{ $prod->prod_cod}}">{{ $prod->prod_desc }}</option>
+                            @endforeach
+                        </select>
+				                
 				              </div>
 				            </div>
 			            </div>
+                        
 		      		</div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group row">
+                            <div class="col-sm-12">
+                              <label for=""><a style="color: red">*</a>Mes:</label>
+                              <select id="mes" name="mes" class="sel2 js-example-basic-single w-100">
+                                  <option value="0">Seleccione un mes</option>
+                                  <option value="1">Enero</option>
+                                  <option value="2">Febrero</option>
+                                  <option value="3">Marzo</option>
+                                  <option value="4">Abril</option>
+                                  <option value="5">Mayo</option>
+                                  <option value="6">Junio</option>
+                                  <option value="7">Julio</option>
+                                  <option value="8">Agosto</option>
+                                  <option value="9">Septiembre</option>
+                                  <option value="10">Octubre</option>
+                                  <option value="11">Noviembre</option>
+                                  <option value="12">Diciembre</option>
+                              </select>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label for=""><a style="color: red">*</a>Gestion:</label>
+                                <select id="ges" name="ges" class="sel3 js-example-basic-single w-100">
+                                  <option value="0">Gestion</option>
+                                  <option value="U">2022</option>
+                                  <option value="V">2023</option>
+                                  <option value="W">2024</option>
+                              </select>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
 		      		<div style="text-align: right;">
-		              <button type="submit" class="btn btn-primary mr-2" >Agregar</button>
+		              <button id="btn-create" type="submit" class="btn btn-primary mr-2" >Generar</button>
 		              <a class="btn btn-light font-weight-medium auth-form-btn" href="{{ route('productType.index') }}">Cancelar</a>
 		            </div>
 	      		</form>
@@ -139,7 +148,52 @@
 {{-- end modal --}}
 @endsection
 @section('script')
+<script src="../../../../js/off-canvas.js"></script>
+<script src="../../../../js/hoverable-collapse.js"></script>
+<script src="../../../../js/template.js"></script>
+<script src="../../../../js/settings.js"></script>
+<script src="../../../../js/todolist.js"></script>
+<script src="../../../../vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="../../../../vendors/select2/select2.min.js"></script>
+<script src="../../../../js/file-upload.js"></script>
+<script src="../../../../js/typeahead.js"></script>
+<script src="../../../../js/select2.js"></script>
 <script>
+    $(document).ready(function(){
+      var valor = 1;
+      axios.get('prom/'+valor)
+        .then(function (response){
+          console.log(response.data);
+        })
+        .then(function(){
+
+        });
+      $('#btn-create').on('click', function(){
+        guardar();
+      });
+    });
+    function guardar(){
+      var codprod = document.getElementById('prod').value;
+      var sel = document.getElementById('prod');
+      var descri = sel.options[sel.selectedIndex].text;
+      var mes = document.getElementById('mes').value;
+      var gestion = document.getElementById('ges').value;
+      var obj = {
+        cod:codprod,
+        des:descri,
+        mesi:mes,
+        ges:gestion
+      };
+      console.log(obj);
+      axios.post('generate-lote',obj)
+        .then(function (response){
+          
+        })
+        .catch(function (error){
+
+        });
+    }
+    
     $('.state-modal').click(function() {
         var estado = $(this).data('state');
         let action;
@@ -193,6 +247,7 @@
     // alert('hola');
 </script>
 @endsection
+
 <style>
     #br{
         border: none;

@@ -62,13 +62,12 @@
         <div>
             <div class="card">
                 <div class="card-body" style="padding-bottom:2px;">
-                    <h5 class="">Confirmacion envio de pedido</h5>
+                    <h5 class="">Confirmacion atencion de pedido</h5>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmped()" style="color:white">Confirmar</a>
-                                    <a class="btn btn-danger font-weight-medium auth-form-btn btn-sm" onclick="cancel()" style="color:white">cancelar</a>
+                                    <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmaten()" style="color:white">Confirmar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
                                 </div>
                             </div>
@@ -79,43 +78,6 @@
         </div>
     </div>
     <div class="col-lg-8 grid-margin">
-        
-        <div>
-            <div class="card">
-                <div class="card-body" style="padding-bottom:2px;">
-                    <h5 class="">Agregar productos</h5>
-                    <form action="" enctype="multipart/from-data">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for=""><a style="color: red">*</a>Seleccionar producto:</label>
-                                        <select id="prod" name="prod" class="js-example-basic-single w-100">
-                                            <option value="0">Seleccione un producto</option>
-                                            @foreach($productos as $prod)
-                                                <option value="{{ $prod->prod_cod}}">{{ $prod->prod_desc }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for=""><a style="color: red">*</a>Cantidad:</label>
-                                        <input id="pat" type="text" name="description" class="form-control" placeholder="Ingrese cantidad"/>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="text-align: right;">
-                                <a class="btn btn-primary font-weight-medium auth-form-btn" onclick="senddet()" style="color:white">Agregar</a>
-                            </div>
-                        </form>
-                </div>
-            </div>
-        </div><br>
         <div>
             <div class="card">
                 <div class="card-body">
@@ -137,15 +99,24 @@
                             <td class="text-center">{{$detail->det_cod}}</td>
                             <td class="text-center">{{$detail->det_desc}}</td>
                             <td class="text-center">{{$detail->det_cant}}</td>
-                            @if($detail->det_state_ate == 0)
-                            <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-bell white" ></i></a>
-                            </td>
-                            @else
-                            <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-bell-ring white" ></i></a>
-                            </td>
-                            @endif
+                            @switch(true)
+                                @case($detail->det_state_ate == 0)
+                                    <td class="text-center">
+                                        <div class="badge badge-outline-primary">En curso</div>
+                                    </td>
+                                    @break
+
+                                @case($detail->det_state_ate == 1)
+                                    <td class="text-center">
+                                        <div class="badge badge-outline-success">Aprovado</div>
+                                    </td>
+                                    @break
+                                @case($detail->det_state_ate == 2)
+                                    <td class="text-center">
+                                        <div class="badge badge-outline-danger">Rechazado</div>
+                                    </td>
+                                    @break
+                            @endswitch
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $detail->det_id }}" data-state="{{ $detail->det_state_ate }}" data-name="{{ $detail->det_cod }}" data-description="{{ $detail->det_desc }}" data-cantidad="{{ $detail->det_cant }}" data-idpedido="{{ $detail->det_ped }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
                             </td>
@@ -207,6 +178,20 @@
 			              <div class="col-sm-12">
 			                <label for=""><a style="color: red">*</a>Cantidad:</label>
 			                <input id="modal-cantidad" type="text" name="cantidad" class="form-control" placeholder="Ingrese descripción"/>
+			              </div>
+			            </div>
+		            </div>
+	      		</div>
+                  <div class="row">
+	      			<div class="col-md-12">
+			            <div class="form-group row">
+			              <div class="col-sm-12">
+			                <label for=""><a style="color: red">*</a>Estado:</label>
+			                <select id="modal-estado" name="estado" class="form-control">
+                                <option value="0">En curso</option>
+                                <option value="1">Aprobado</option>
+                                <option value="2">Rechazado</option>
+                            </select>
 			              </div>
 			            </div>
 		            </div>
@@ -276,11 +261,11 @@
                 })
             });
     }
-    function confirmped(){
+    function confirmaten(){
         var obj={
             idped:codigo_pedido
         };
-        axios.put('/Distribucion/confirm/', obj)
+        axios.put('/AdminDistribucion/confirm/', obj)
             .then(function (response) {
                 //console.log('ok');
                 $.toast({
@@ -292,7 +277,7 @@
                     position: 'bottom-right'
                 })
                 console.log(response.data);
-                window.location.href="/Distribucion/"+codigo_uidad;
+                window.location.href="/AdminDistribucion/"+codigo_uidad;
                 //location.reload();
             })
             .catch(function (error){
@@ -306,49 +291,20 @@
                 })
             });
     }
-    function cancel(){
-        var obj={
-            idped:codigo_pedido
-        };
-        axios.put('/Distribucion/cancel/', obj)
-            .then(function (response) {
-                //console.log('ok');
-                $.toast({
-                    heading: 'Operación exitosa!',
-                    text: 'Se elimino el registro correctamente.',
-                    showHideTransition: 'slide',
-                    icon: 'success',
-                    loaderBg: '#f96868',
-                    position: 'bottom-right'
-                })
-                console.log(response.data);
-                window.location.href="/Distribucion/"+codigo_uidad;
-                //location.reload();
-            })
-            .catch(function (error){
-                $.toast({
-                    heading: 'Alerta!',
-                    text: 'Algo salio mal en la cancelacion.',
-                    showHideTransition: 'slide',
-                    icon: 'warning',
-                    loaderBg: '#f96868',
-                    position: 'bottom-right'
-                })
-            });
-    }
     function volver() {
-        window.location.href="/Distribucion/"+codigo_uidad;
+        window.location.href="/AdminDistribucion/"+codigo_uidad;
     }
     $('.update-modal').click(function() {
         var estado = $(this).data('state'); 
         let action;
         if(estado == 1 ||estado == 0||estado == 2){
-            action = "{{ url('/Distribucion/Actualizar') }}/" + $(this).data('id')+"/"+$(this).data('idpedido');
+            action = "{{ url('/AdminDistribucion/Actualizar') }}/" + $(this).data('id')+"/"+$(this).data('idpedido');
             $('#tituloE-modal').text('Actualizar Producto');
             $('#modal-numped').val($(this).data('idpedido'));
             $('#modal-nameC').val($(this).data('name'));
             $('#modal-descriptionC').val($(this).data('description'));
             $('#modal-cantidad').val($(this).data('cantidad'));
+            $('#modal-estado').val($(this).data('state'));
             $('#boton-modalE').text('Actualizar');
             $('#boton-modalE').attr('class','btn btn-primary');
             //console.log('desactivar');

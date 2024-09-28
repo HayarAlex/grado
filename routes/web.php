@@ -80,18 +80,21 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::put('/Tipo-de-producto/activar/{id}','ProductTypeController@activate')->name('productType.active');
 	Route::put('/Tipo-de-producto/eliminar/{id}','ProductTypeController@delete')->name('productType.delete');
 	Route::put('/Tipo-de-producto/Actualizar/{id}','ProductTypeController@update')->name('productType.update');
+	Route::get('/Tipo-de-producto/{id}', 'ProductTypeController@detLinea')->name('productType.detail');
+	Route::post('/Tipo-de-producto/add-etapa', 'ProductTypeController@addetapa');
+	Route::delete('/Tipo-de-producto/elimiprocs/{id}', 'ProductTypeController@elimpro');
 
 	//rutas para productos
 	Route::get('Producto', 'ProductController@index')->name('product.index');
 	Route::get('/Producto/new', 'ProductController@create')->name('product.new');
 
 	// rutas actividades y promociones
-	Route::get('Actividades-y-promociones', 'PromotionController@index')->name('promotion.index');
-	Route::post('/Actividades-y-promociones/save', 'PromotionController@store')->name('promotion.store');
-	Route::put('/Actividades-y-promociones/desactivar/{id}','PromotionController@deactivate')->name('promotion.deactive');
-	Route::put('/Actividades-y-promociones/activar/{id}','PromotionController@activate')->name('promotion.active');
-	Route::put('/Actividades-y-promociones/eliminar/{id}','PromotionController@delete')->name('promotion.delete');
-	Route::put('/Actividades-y-promociones/Actualizar/{id}','PromotionController@update')->name('promotion.update');
+	Route::get('Tareas', 'PromotionController@index')->name('promotion.index');
+	Route::post('/Tareas/save', 'PromotionController@store')->name('promotion.store');
+	Route::put('/Tareas/desactivar/{id}','PromotionController@deactivate')->name('promotion.deactive');
+	Route::put('/Tareas/activar/{id}','PromotionController@activate')->name('promotion.active');
+	Route::put('/Tareas/eliminar/{id}','PromotionController@delete')->name('promotion.delete');
+	Route::put('/Tareas/Actualizar/{id}','PromotionController@update')->name('promotion.update');
 
 	// rutas espacios deportivos
 	Route::get('Espacios-Deportivos', 'SpaceController@index')->name('space.index');
@@ -104,12 +107,12 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/reservas', 'ReservationController@index')->name('reservation.index');
 
 	// rutas deportes
-	Route::get('Deportes', 'SportController@index')->name('sport.index');
-	Route::post('/Deportes/save', 'SportController@store')->name('sport.store');
-	Route::put('/Deportes/desactivar/{id}','SportController@deactivate')->name('sport.deactive');
-	Route::put('/Deportes/activar/{id}','SportController@activate')->name('sport.active');
-	Route::put('/Deportes/eliminar/{id}','SportController@delete')->name('sport.delete');
-	Route::put('/Deportes/Actualizar/{id}','SportController@update')->name('sport.update');
+	Route::get('Unidad', 'SportController@index')->name('sport.index');
+	Route::post('/Unidad/save', 'SportController@store')->name('sport.store');
+	Route::put('/Unidad/desactivar/{id}','SportController@deactivate')->name('sport.deactive');
+	Route::put('/Unidad/activar/{id}','SportController@activate')->name('sport.active');
+	Route::put('/Unidad/eliminar/{id}','SportController@delete')->name('sport.delete');
+	Route::put('/Unidad/Actualizar/{id}','SportController@update')->name('sport.update');
 	// rutas almacenes
 	Route::get('Almacenes', 'AlmacenController@index')->name('almacen.index');
 	Route::post('/Almacenes/save', 'AlmacenController@store')->name('almacen.store');
@@ -119,12 +122,12 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::put('/Almacenes/Actualizar/{id}','AlmacenController@update')->name('almacen.update');
 
 	// rutas equipos
-	Route::get('Equipos', 'TeamController@index')->name('team.index');
-	Route::post('/Equipos/save', 'TeamController@store')->name('team.store');
-	Route::put('/Equipos/desactivar/{id}','TeamController@deactivate')->name('team.deactive');
-	Route::put('/Equipos/activar/{id}','TeamController@activate')->name('team.active');
-	Route::put('/Equipos/eliminar/{id}','TeamController@delete')->name('team.delete');
-	Route::put('/Equipos/Actualizar/{id}','TeamController@update')->name('team.update');
+	Route::get('Actividades', 'TeamController@index')->name('team.index');
+	Route::post('/Actividades/save', 'TeamController@store')->name('team.store');
+	Route::put('/Actividades/desactivar/{id}','TeamController@deactivate')->name('team.deactive');
+	Route::put('/Actividades/activar/{id}','TeamController@activate')->name('team.active');
+	Route::put('/Actividades/eliminar/{id}','TeamController@delete')->name('team.delete');
+	Route::put('/Actividades/Actualizar/{id}','TeamController@update')->name('team.update');
 
 	//rutas ventas
 	Route::get('Venta', 'SalesController@index')->name('sale.index');
@@ -136,7 +139,25 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/Distribucion/savedet/', 'DistributionController@storedet')->name('distribucion.storedet');
 	Route::put('/Distribucion/confirm/','DistributionController@activate')->name('distribucion.active');
 	Route::put('/Distribucion/cancel/','DistributionController@cancelar')->name('distribucion.cancel');
+	Route::put('/Distribucion/Actualizar/{id}/{pedido}','DistributionController@update')->name('almacen.update');
 	// administracion de pedidos-distribucion
 	Route::get('AdminDistribucion', 'DistributionController@indexadm')->name('distribucion.indexadm');
-	Route::get('/AdminDistribucion/{id}', 'DistributionController@admped')->name('distribucion.pedidos');
+	Route::get('/AdminDistribucion/{id}', 'DistributionController@admped')->name('distribucion.pedidosadm');
+	Route::get('/AdminDistribucion/Detalle/{id}', 'DistributionController@admdetped')->name('distribucion.detpedidoadm');
+	Route::put('/AdminDistribucion/confirm/','DistributionController@atender')->name('distribucion.atencion');
+	Route::put('/AdminDistribucion/Actualizar/{id}/{pedido}','DistributionController@updateadm')->name('almacen.update');
+	//pedidos institucionales
+	Route::get('Institucional','DistributionController@indexi')->name('institucion.index');
+	Route::get('/Institucional/{id}', 'DistributionController@newlic')->name('institucion.unidad');
+	Route::post('/Institucional/save/', 'DistributionController@storei')->name('institucion.store');
+	Route::get('/Institucional/Detalle/{id}', 'DistributionController@detinsa')->name('institucion.detpedido');
+	Route::post('/Institucional/savedet/', 'DistributionController@storedeti')->name('distribucion.storedet');
+
+
+	// rutas de ordenes de produccion
+	Route::get('Orden-produccion', 'OrderController@index')->name('order.index');
+	Route::post('/Orden-produccion/save', 'OrderController@store')->name('order.store');
+	
+	Route::get('prom/{id}','OrderController@proemlot');
+	Route::post('generate-lote', 'OrderController@generate');
 });

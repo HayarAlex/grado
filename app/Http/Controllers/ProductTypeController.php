@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\ProductType;
+use App\Promotion;
+use App\Team;
+use App\Almacen;
+use App\TypeDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt; 
 
@@ -112,5 +116,45 @@ class ProductTypeController extends Controller
         $productType = ProductType::findOrFail($product_type_id);
         $productType->delete();
         return redirect()->route('productType.index')->with('status','Eliminado');
+    }
+
+    public function detLinea($id)
+    {
+        $prodtypes = ProductType::findOrFail($id);
+        $actividades = Team::all();
+        $tareas = Promotion::all();
+        $procesos = TypeDetail::where('tipd_idlinea',$id)->paginate(5);
+        $almacenes = Almacen::where('alm_state',1)->get();
+        return view('ProductTypes.detail',[
+            'tipos' => $prodtypes,
+            'actividades' => $actividades,
+            'tareas' => $tareas,
+            'almacenes' => $almacenes,
+            'procesos' => $procesos
+        ]);
+        
+    }
+    public function addetapa(Request $request){
+        
+        $det = new TypeDetail;
+        $det->tipd_idlinea = $request->linea;
+        $det->tipd_orden = $request->orden;
+        $det->tipd_idacti = $request->activi;
+        $det->tipd_actividad = $request->dacti;
+        $det->tipd_idtarea = $request->tarea;
+        $det->tipd_tarea = $request->dtare;
+        $det->tipd_idalmori = $request->almo;
+        $det->tipd_almorigen = $request->dalmo;
+        $det->tipd_idalmdes = $request->almd;
+        $det->tipd_almdestino = $request->dalmd;
+        $det->save();
+        $procesos = TypeDetail::all();
+        return response()->json($procesos);
+    }
+    public function elimpro($id)
+    {
+        $proces = TypeDetail::findOrFail($id);
+        $proces->delete();
+        return response()->json(['message' => 'Registro eliminado correctamente.']);
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Distribution;
+use App\Institution;
 use App\Unegocio;
 use App\Product;
 use App\DisDetail;
+use App\InsDetail;
 use Illuminate\Http\Request;
 
 class DistributionController extends Controller
@@ -73,11 +75,33 @@ class DistributionController extends Controller
             'listprods' => $listprods
         ]);
     }
+    public function admdetped($id)
+    {
+        $pedidos = Distribution::findOrFail($id);
+        $unidades = Unegocio::findOrFail($pedidos->dis_uneg);
+        $productos = Product::all();
+        $listprods = DisDetail::where('det_ped',$id)->paginate(5);
+        //return $unidades;
+        return view('Distribuciones.admdetail',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos,
+            'productos' => $productos,
+            'listprods' => $listprods
+        ]);
+    }
 
     public function activate(Request $request)
     {
         $dis = Distribution::findOrFail($request->idped);
         $dis->dis_state_env = 1;
+        $dis->update();
+        return Distribution::orderBy("dis_id")->get();
+    }
+    public function atender(Request $request)
+    {
+        $dis = Distribution::findOrFail($request->idped);
+        $dis->dis_state_ate = 1;
+        $dis->fecha_aten = date('Y-m-d');
         $dis->update();
         return Distribution::orderBy("dis_id")->get();
     }
@@ -146,6 +170,23 @@ class DistributionController extends Controller
         //
     }
 
+    public function update(Request $request, $prod_id,$pedido)
+    {
+        $dis = DisDetail::findOrFail($prod_id);
+        $dis->det_cant = $request->cantidad;
+        $dis->save();
+        return redirect('/Distribucion/Detalle/'.$pedido)->with('status','Actualizado');
+    }
+
+    public function updateadm(Request $request, $prod_id,$pedido)
+    {
+        $dis = DisDetail::findOrFail($prod_id);
+        $dis->det_cant = $request->cantidad;
+        $dis->det_state_ate = $request->estado;
+        $dis->save();
+        return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status','Actualizado');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -164,10 +205,6 @@ class DistributionController extends Controller
      * @param  \App\Distribution  $distribution
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Distribution $distribution)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -178,5 +215,72 @@ class DistributionController extends Controller
     public function destroy(Distribution $distribution)
     {
         //
+    }
+    public function indexi()
+    {
+        $unidades = Unegocio::where('uneg_state', 1)
+                    ->orderBy('uneg_id', 'desc')
+                    ->paginate(5);
+        return view('Instituciones.unit',[
+            'unidades' => $unidades
+        ]);
+    }
+    public function newlic($id)
+    {
+        $unidades = Unegocio::findOrFail($id);
+        $pedidos = Institution::where('ins_uneg', $id)
+                    ->where('ins_state',0)
+                    ->orderBy('ins_id', 'desc')
+                    ->paginate(5);
+        return view('Instituciones.new',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos
+        ]);
+    }
+    public function storei(Request $request)
+    {
+        $dis = new Institution;
+        $dis->ins_uneg = $request->un;
+        $dis->ins_nombre = $request->ins;
+        $dis->ins_codigo = $request->obse;
+        $dis->ins_cuce = $request->cuc;
+        $dis->ins_state = 0;
+        $dis->ins_state_env = 0;
+        $dis->ins_state_ate = 0;
+        $dis->fecha_entg = $request->fech;
+        $dis->fecha_aten = date('Y-m-d');
+        $dis->fecha_soli = date('Y-m-d');
+        $dis->save();
+        return Institution::orderBy("ins_id")->get();
+    }
+    public function detinsa($id)
+    {
+        $pedidos = Institution::findOrFail($id);
+        $unidades = Unegocio::findOrFail($pedidos->ins_uneg);
+        $productos = Product::all();
+        $listprods = InsDetail::where('ins_ped',$id)->paginate(5);
+        //return $unidades;
+        return view('Instituciones.detail',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos,
+            'productos' => $productos,
+            'listprods' => $listprods
+        ]);
+    }
+    public function storedeti(Request $request)
+    {
+        $dis = new InsDetail;
+        $dis->ins_ped = $request->pedi;
+        $dis->ins_uneg = $request->uneg;
+        $dis->ins_cod = $request->cod;
+        $dis->ins_desc = $request->des;
+        $dis->ins_cant = $request->can;
+        $dis->ins_state = 0;
+        $dis->ins_state_ate = 0;
+        $dis->ins_state_apro = 0;
+        $dis->ins_fecha_ate = date('Y-m-d');
+        $dis->ins_fecha_apro = date('Y-m-d');
+        $dis->save();
+        return InsDetail::orderBy("detins_id")->where('ins_ped',$request->pedi)->get();
     }
 }

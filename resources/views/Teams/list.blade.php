@@ -5,9 +5,9 @@
 	<div class="col-lg-7 grid-margin">
 	  <div class="card">
 	    <div class="card-body">
-	      <h4 class="card-title">Lista Equipos</h4>
+	      <h4 class="card-title">Actividades de Produccion</h4>
 	      <p class="card-description">
-	        Equipos
+	        Lista de actividades
 	      </p>
 	      <div class="table-responsive">
 	        <table class="table">
@@ -75,7 +75,7 @@
 	<div class="col-lg-5 grid-margin">
 	  	<div class="card">
 	    	<div class="card-body">
-	      		<h4 class="card-title">Nuevo Equipo</h4><br>
+	      		<h4 class="card-title">Nueva Actividad</h4><br>
 	      		<form action="{{ route('team.store')}}" method="post" enctype="multipart/from-data">
 	      			@csrf
 		      		<div class="row">
@@ -142,15 +142,15 @@
         var estado = $(this).data('state');
         let action;
         if(estado == 1){
-          action = "{{ url('/Equipos/desactivar') }}/" + $(this).data('id');
-          $('#tituloP-modal').text('Desactivar equipo');
+          action = "{{ url('/Actividades/desactivar') }}/" + $(this).data('id');
+          $('#tituloP-modal').text('Desactivar actividad');
           $('#titulo-modal').text('¿Esta seguro de desactivar este registro?');
           $('#boton-modal').text('Desactivar');
           $('#boton-modal').attr('class','btn btn-danger');
           console.log('desactivar');          
         }else{
-          action = "{{ url('/Equipos/activar') }}/" + $(this).data('id');
-          $('#tituloP-modal').text('Activar equipo');
+          action = "{{ url('/Actividades/activar') }}/" + $(this).data('id');
+          $('#tituloP-modal').text('Activar actividad');
           $('#titulo-modal').text('¿Esta seguro de activar este registro?');
           console.log('activar');
           $('#boton-modal').text('Activar');
@@ -163,8 +163,8 @@
         var estado = $(this).data('state');
         let action;
         if(estado == 1 ||estado == 0){
-          action = "{{ url('/Equipos/eliminar') }}/" + $(this).data('id');
-          $('#tituloP-modal').text('Eliminar equipo');
+          action = "{{ url('/Actividades/eliminar') }}/" + $(this).data('id');
+          $('#tituloP-modal').text('Eliminar actividad');
           $('#titulo-modal').text('¿Esta seguro de eliminar este registro?');
           $('#boton-modal').text('Eliminar');
           $('#boton-modal').attr('class','btn btn-danger');
@@ -177,8 +177,8 @@
         var estado = $(this).data('state'); 
         let action;
         if(estado == 1 ||estado == 0){
-          action = "{{ url('/Equipos/Actualizar') }}/" + $(this).data('id');
-          $('#tituloE-modal').text('Actualizar equipo');
+          action = "{{ url('/Actividades/Actualizar') }}/" + $(this).data('id');
+          $('#tituloE-modal').text('Actualizar actividad');
           $('#modal-descriptionC').val($(this).data('description'));
           $('#boton-modalE').text('Actualizar');
           $('#boton-modalE').attr('class','btn btn-primary');

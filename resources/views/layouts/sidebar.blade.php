@@ -38,26 +38,7 @@
       <i class="mdi mdi-book menu-icon"></i>
       <span class="menu-title">Productos</span>
       </a>
-    </li>
-    {{-- <li class="nav-item">
-      <a class="nav-link" href="{{ route('sale.index') }}">
-      <i class="mdi mdi-tag-multiple menu-icon"></i>
-      <span class="menu-title">Ventas</span>
-      </a>
-    </li> --}}
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#venta" aria-expanded="false" aria-controls="venta">
-      <i class="mdi mdi-tag-multiple menu-icon"></i>
-      <span class="menu-title">Ventas</span>
-      <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="venta">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"><a class="nav-link" href="#">Nueva venta</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('sale.index') }}">Historial de ventas</a></li>
-        </ul>
-      </div>
-    </li>
+    </li> 
     <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#editors" aria-expanded="false" aria-controls="editors">
       <i class="mdi mdi-pen menu-icon"></i>
@@ -67,35 +48,34 @@
       <div class="collapse" id="editors">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{{ route('category.index') }}">Categorias</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('sport.index') }}">Deportes</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('sport.index') }}">Unidades de Negocio</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('almacen.index') }}">Almacenes</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('productType.index') }}">Tipo producto</a></li>
-        </ul>
-      </div>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#training" aria-expanded="false" aria-controls="training">
-      <i class="mdi mdi-pen menu-icon"></i>
-      <span class="menu-title">Gestion de Entrenamientos</span>
-      <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="training">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"><a class="nav-link" href="#">Entrenamientos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('team.index') }}">Equipos</a></li>
         </ul>
       </div>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#distribution" aria-expanded="false" aria-controls="distribution">
-      <i class="mdi mdi-pen menu-icon"></i>
-      <span class="menu-title">Distribuciones</span>
+      <i class="mdi mdi-cart-plus menu-icon"></i>
+      <span class="menu-title">Distribucion</span>
       <i class="menu-arrow"></i>
       </a>
       <div class="collapse" id="distribution">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.index') }}">Pedidos Sucursal</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.indexadm') }}">Adm de Pedidos</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="collapse" href="#insti" aria-expanded="false" aria-controls="insti">
+      <i class="mdi mdi-file-document menu-icon"></i>
+      <span class="menu-title">Licitaciones</span>
+      <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="insti">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{{ route('institucion.index') }}">Licitaciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.indexadm') }}">Adm de Licitaciones</a></li>
         </ul>
       </div>
     </li>
@@ -109,24 +89,26 @@
         <ul class="nav flex-column sub-menu">
           @if (Auth::user()->rol_id == 1 || Auth::user()->rol_id == 2)
           <li class="nav-item"><a class="nav-link" href="{{ route('user.index') }}">Administradores</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('responsible.index') }}">Encargados</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('coach.index') }}">Entrenadores</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('responsible.index') }}">Vendedores</a></li>
           @endif
           <li class="nav-item"><a class="nav-link" href="{{ route('customer.index') }}">Clientes</a></li>
         </ul>
       </div>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('space.index') }}">
-      <i class="mdi mdi-book menu-icon"></i>
-      <span class="menu-title">Gestion de Espacios deprtivos</span>
+      <a class="nav-link" data-toggle="collapse" href="#order" aria-expanded="false" aria-controls="order">
+      <i class="mdi mdi-worker menu-icon"></i>
+      <span class="menu-title">Orden de Produccion</span>
+      <i class="menu-arrow"></i>
       </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{{ route('reservation.index') }}">
-      <i class="mdi mdi-book menu-icon"></i>
-      <span class="menu-title">Reservas</span>
-      </a>
+      <div class="collapse" id="order">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"><a class="nav-link" href="{{ route('order.index') }}">Orden de produccion</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('productType.index') }}">Linea de produccion</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('promotion.index') }}">Tareas</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('team.index') }}">Actividades</a></li>
+        </ul>
+      </div>
     </li>
   </ul>
 </nav>

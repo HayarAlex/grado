@@ -31,7 +31,7 @@
         <div>
             <div class="card">
                 <div class="card-body" style="padding-bottom:2px;">
-                    <h5 class="">Detalle Pedido</h5>
+                    <h5 class="">Detalle Licitacion</h5>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
@@ -39,13 +39,19 @@
                                     <p class="text-muted font-weight-bold text-small">N° de pedido: <span class=" font-weight-normal"></span></p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <p class="text-muted font-weight-bold text-small"><span class=" font-weight-normal">{{ $pedidos->dis_id }}</span></p>
+                                    <p class="text-muted font-weight-bold text-small"><span class=" font-weight-normal">{{ $pedidos->ins_id }}</span></p>
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="text-muted font-weight-bold text-small">Detalle: <span class=" font-weight-normal"></span></p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <p class="text-muted font-weight-bold text-small"><span class=" font-weight-normal">{{ $pedidos->dis_nombre }}</span></p>
+                                    <p class="text-muted font-weight-bold text-small"><span class=" font-weight-normal">{{ $pedidos->ins_nombre }}</span></p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="text-muted font-weight-bold text-small">Cuce: <span class=" font-weight-normal"></span></p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="text-muted font-weight-bold text-small"><span class=" font-weight-normal">{{ $pedidos->ins_cuce }}</span></p>
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="text-muted font-weight-bold text-small">Fecha Solicitud: <span class=" font-weight-normal"></span></p>
@@ -53,16 +59,23 @@
                                 <div class="col-sm-6">
                                     <p class="text-muted font-weight-bold text-small"><span class=" font-weight-normal">{{ $pedidos->fecha_soli }}</span></p>
                                 </div>
+                                <div class="col-sm-6">
+                                    <p class="text-muted font-weight-bold text-small">Fecha Entrega: <span class=" font-weight-normal"></span></p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p class="text-muted font-weight-bold text-small"><span class=" font-weight-normal">{{ $pedidos->fecha_entg }}</span></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div><br>
+        
         <div>
             <div class="card">
                 <div class="card-body" style="padding-bottom:2px;">
-                    <h5 class="">Confirmacion envio de pedido</h5>
+                    <h5 class="">Confirmacion envio de licitacion</h5>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row">
@@ -235,7 +248,7 @@
 <script src="../../../../js/select2.js"></script>
 <script>
     var codigo_uidad = {{ $unidades->uneg_id}};
-    var codigo_pedido = {{ $pedidos->dis_id}};
+    var codigo_pedido = {{ $pedidos->ins_id}};
     //console.log(codigo_uidad);
     //console.log(codigo_pedido);
     function senddet() {
@@ -251,7 +264,7 @@
             des:selected,
             can:cant
         };
-        axios.post('/Distribucion/savedet/', ogfbj)
+        axios.post('/Institucional/savedet/', ogfbj)
             .then(function (response) {
                 //console.log('ok');
                 $.toast({

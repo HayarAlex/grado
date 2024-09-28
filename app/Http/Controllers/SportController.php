@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Sport;
+use App\Unegocio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -15,7 +16,7 @@ class SportController extends Controller
      */
     public function index()
     {
-        $sports = Sport::orderBy('sport_id','desc')->paginate(5);
+        $sports = Unegocio::orderBy('uneg_id','asc')->paginate(5);
         return view('Sports.list',[
             'sports' => $sports
         ]);
@@ -43,8 +44,9 @@ class SportController extends Controller
         request()->validate([
             'description' => 'required'
         ]);
-        $sport = new Sport;
-        $sport->description = $request->description;
+        $sport = new Unegocio;
+        $sport->uneg_name = $request->description;
+        $sport->uneg_state = 1;
         $sport->save();
         return redirect()->route('sport.index')->with('status','Agregado');
     }
@@ -78,25 +80,25 @@ class SportController extends Controller
      * @param  \App\Sport  $sport
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $sport_id)
+    public function update(Request $request, $uneg_id)
     {
-        $sport = Sport::findOrFail($sport_id);
-        $sport->description = $request->description;
+        $sport = Unegocio::findOrFail($uneg_id);
+        $sport->uneg_name = $request->description;
         $sport->save();
         return redirect()->route('sport.index')->with('status','Actualizado');
     }
 
-    public function deactivate($sport_id)
+    public function deactivate($uneg_id)
     {
-        $sport = Sport::findOrFail($sport_id);
-        $sport->state = 0;
+        $sport = Unegocio::findOrFail($uneg_id);
+        $sport->uneg_state = 0;
         $sport->save();
         return redirect()->route('sport.index')->with('status','Desactivado');
     }
-    public function activate($sport_id)
+    public function activate($uneg_id)
     {
-        $sport = Sport::findOrFail($sport_id);
-        $sport->state = 1;
+        $sport = Unegocio::findOrFail($uneg_id);
+        $sport->uneg_state = 1;
         $sport->save();
         return redirect()->route('sport.index')->with('status','Activado');
     }
@@ -104,9 +106,9 @@ class SportController extends Controller
     {
         //
     }
-    public function delete($sport_id)
+    public function delete($uneg_id)
     {
-        $sport = Sport::findOrFail($sport_id);
+        $sport = Unegocio::findOrFail($uneg_id);
         $sport->delete();
         return redirect()->route('sport.index')->with('status','Eliminado');
     }

@@ -5,9 +5,9 @@
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Lista de Encargados</h4>
+        <h4 class="card-title">Lista de Vendedores</h4>
         <div style="text-align: right;">
-          <a class="btn btn-primary font-weight-medium auth-form-btn" href="{{ route('responsible.new') }}">agregar encargado</a>
+          <a class="btn btn-primary font-weight-medium auth-form-btn" href="{{ route('responsible.new') }}">agregar vendedor</a>
         </div><br>
         <div class="table-responsive">
           <table class="table table-striped">
@@ -83,14 +83,14 @@
         let action;
         if(estado == 1){
           action = "{{ url('/responsible/desactivar') }}/" + $(this).data('id');
-          $('#title').text('Desactivar Encargado');
+          $('#title').text('Desactivar Vendedor');
           $('#titulo-modal').text('¿Esta seguro de desactivar este registro?');
           $('#boton-modal').text('Desactivar');
           $('#boton-modal').attr('class','btn btn-danger');
           console.log('desactivar');          
         }else{
           action = "{{ url('/responsible/activar') }}/" + $(this).data('id');
-          $('#title').text('Activar Encargado');
+          $('#title').text('Activar Vendedor');
           $('#titulo-modal').text('¿Esta seguro de activar este registro?');
           console.log('activar');
           $('#boton-modal').text('Activar');
@@ -104,7 +104,7 @@
         let action;
         if(estado == 1 ||estado == 0){
           action = "{{ url('/responsible/eliminar') }}/" + $(this).data('id');
-          $('#title').text('Eliminar Encargado');
+          $('#title').text('Eliminar Vendedor');
           $('#titulo-modal').text('¿Esta seguro de eliminar este registro?');
           $('#boton-modal').text('Eliminar');
           $('#boton-modal').attr('class','btn btn-danger');

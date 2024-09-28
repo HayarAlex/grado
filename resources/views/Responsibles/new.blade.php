@@ -4,11 +4,11 @@
   <div class="col-12 grid-margin">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Agregar Nuevo Encargado</h4>
+        <h4 class="card-title">Agregar Nuevo Vendedor</h4>
         <form class="form-sample" action="{{ route('responsible.store')}}" method="post" enctype="multipart/from-data">
           @csrf
           <p class="card-description">
-            Nuevo Encargado
+            Nuevo Vendedor
           </p>
           <div class="row">
             <div class="col-md-4">
