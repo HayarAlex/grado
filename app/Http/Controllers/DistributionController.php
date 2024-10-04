@@ -8,6 +8,8 @@ use App\Unegocio;
 use App\Product;
 use App\DisDetail;
 use App\InsDetail;
+use App\UserUnit;
+use App\User;
 use Illuminate\Http\Request;
 
 class DistributionController extends Controller
@@ -19,9 +21,9 @@ class DistributionController extends Controller
      */
     public function index()
     {
-        $unidades = Unegocio::where('uneg_state', 1)
-                    ->orderBy('uneg_id', 'desc')
-                    ->paginate(5);
+        $userId = auth()->id();
+        $unidades = UserUnit::where('usu_iduser',$userId)
+             ->paginate(5);
         return view('Distribuciones.unit',[
             'unidades' => $unidades
         ]);
@@ -218,8 +220,11 @@ class DistributionController extends Controller
     }
     public function indexi()
     {
-        $unidades = Unegocio::where('uneg_state', 1)
-                    ->orderBy('uneg_id', 'desc')
+        //$unidades = Unegocio::where('uneg_state', 1)
+                    //->orderBy('uneg_id', 'desc')
+                    //->paginate(5);
+        $userId = auth()->id();
+        $unidades = UserUnit::where('usu_iduser',$userId)
                     ->paginate(5);
         return view('Instituciones.unit',[
             'unidades' => $unidades
@@ -283,4 +288,145 @@ class DistributionController extends Controller
         $dis->save();
         return InsDetail::orderBy("detins_id")->where('ins_ped',$request->pedi)->get();
     }
+
+    public function indexadmins()
+    {
+        $unidades = Unegocio::where('uneg_state', 1)
+                    ->orderBy('uneg_id', 'desc')
+                    ->paginate(5);
+        return view('Instituciones.admunit',[
+            'unidades' => $unidades
+        ]);
+    }
+    public function admpedins($id)
+    {
+        $unidades = Unegocio::findOrFail($id);
+        $pedidos = Institution::where('ins_uneg', $id)
+                    ->where('ins_state',0)
+                    ->orderBy('ins_id', 'desc')
+                    ->paginate(5);
+        return view('Instituciones.admpedidos',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos
+        ]);
+    }
+    public function admdetpedins($id)
+    {
+        $pedidos = Institution::findOrFail($id);
+        $unidades = Unegocio::findOrFail($pedidos->ins_uneg);
+        $productos = Product::all();
+        $listprods = InsDetail::where('ins_ped',$id)->paginate(5);
+        //return $unidades;
+        return view('Instituciones.admdetail',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos,
+            'productos' => $productos,
+            'listprods' => $listprods
+        ]);
+    }
+    public function atenderins(Request $request)
+    {
+        $dis = Institution::findOrFail($request->idped);
+        $dis->ins_state_ate = 1;
+        $dis->fecha_aten = date('Y-m-d');
+        $dis->update();
+        return Institution::orderBy("ins_id")->get();
+    }
+    public function updateins(Request $request, $prod_id,$pedido)
+    {
+        $dis = InsDetail::findOrFail($prod_id);
+        $dis->ins_cant = $request->cantidad;
+        $dis->ins_state_ate = $request->estado;
+        $dis->save();
+        return redirect('/AdminInsti/Detalle/'.$pedido)->with('status','Actualizado');
+    }
+    public function indexapro()
+    {
+        $unidades = Unegocio::where('uneg_state', 1)
+                    ->orderBy('uneg_id', 'desc')
+                    ->paginate(5);
+        return view('Instituciones.comunit',[
+            'unidades' => $unidades
+        ]);
+    }
+    public function admlistapro($id)
+    {
+        $unidades = Unegocio::findOrFail($id);
+        $pedidos = Institution::where('ins_uneg', $id)
+                    ->where('ins_state',0)
+                    ->orderBy('ins_id', 'desc')
+                    ->paginate(5);
+        return view('Instituciones.compedidos',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos
+        ]);
+    }
+    public function admdetapro($id)
+    {
+        $pedidos = Institution::findOrFail($id);
+        $unidades = Unegocio::findOrFail($pedidos->ins_uneg);
+        $productos = Product::all();
+        $listprods = InsDetail::where('ins_ped',$id)->paginate(5);
+        //return $unidades;
+        return view('Instituciones.comaprov',[
+            'unidades' => $unidades,
+            'pedidos' => $pedidos,
+            'productos' => $productos,
+            'listprods' => $listprods
+        ]);
+    }
+    public function confapro(Request $request)
+    {
+        $dis = Institution::findOrFail($request->idped);
+        $dis->ins_state_apro = 1;
+        $dis->fecha_apro = date('Y-m-d');
+        $dis->update();
+        return Institution::orderBy("ins_id")->get();
+    }
+    public function confrech(Request $request)
+    {
+        $dis = Institution::findOrFail($request->idped);
+        $dis->ins_state_apro = 2;
+        $dis->fecha_apro = date('Y-m-d');
+        $dis->update();
+        return Institution::orderBy("ins_id")->get();
+    }
+
+    public function indexconf()
+    {
+        $usuarios = User::where('state',1)
+                    ->paginate(5);
+        return view('Unitxuser.index',[
+            'usuarios' => $usuarios
+        ]);
+    }
+    public function asiguneg($id)
+    {
+        $usuarios = User::findOrFail($id);
+        $unidades = Unegocio::all();
+        $asignations = UserUnit::orderBy('usu_id', 'desc')
+                    ->paginate(5);
+        return view('Unitxuser.asignation',[
+            'unidades' => $unidades,
+            'usuarios' => $usuarios,
+            'asignations' => $asignations
+        ]);
+    }
+    public function addunit(Request $request){
+        
+        $asig = new UserUnit;
+        $asig->usu_iduser = $request->usuario;
+        $asig->usu_iduneg = $request->cod;
+        $asig->usu_name = $request->des;
+        $asig->save();
+        $proasignate = UserUnit::where('usu_id',$request->usuario)->paginate(5);
+        return response()->json($proasignate);
+    }
+    public function elimuni($id)
+    {
+        $proces = UserUnit::findOrFail($id);
+        $proces->delete();
+        return response()->json(['message' => 'Registro eliminado correctamente.']);
+    }
+
 }

@@ -3,6 +3,7 @@
 @include('layouts.notify')
 <div class="row">
   <div class="col-lg-6 grid-margin">
+      <h5>Administrador - Licitaciones</h5>
       <div class="card">
           <div class="card-body">
               <h4 class="card-title">Unidades de Negocio</h4>
@@ -20,7 +21,7 @@
                           <tr>
                             <td class="text-left">{{ $unid->uneg_id }}</td>
                             <td class="text-left">{{ $unid->uneg_name }}</td>
-                            <td class="text-center"><center><a class="text-center" style="color:#403969" href="{{ url('/AdminDistribucion/'.$unid->uneg_id) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center></td>
+                            <td class="text-center"><center><a class="text-center" style="color:#403969" href="{{ url('/AdminInsti/'.$unid->uneg_id) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center></td>
                           </tr>
                         @endforeach
                       </tbody>

@@ -18,9 +18,9 @@
                       <tbody>
                         @foreach($unidades as $unid)
                           <tr>
-                            <td class="text-left">{{ $unid->uneg_id }}</td>
-                            <td class="text-left">{{ $unid->uneg_name }}</td>
-                            <td class="text-center"><center><a class="text-center" style="color:#403969" href="{{ url('/Distribucion/'.$unid->uneg_id) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center></td>
+                            <td class="text-left">{{ $unid->usu_iduneg }}</td>
+                            <td class="text-left">{{ $unid->usu_name }}</td>
+                            <td class="text-center"><center><a class="text-center" style="color:#403969" href="{{ url('/Distribucion/'.$unid->usu_iduneg) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center></td>
                           </tr>
                         @endforeach
                       </tbody>

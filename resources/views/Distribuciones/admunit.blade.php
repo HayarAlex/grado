@@ -3,6 +3,7 @@
 @include('layouts.notify')
 <div class="row">
   <div class="col-lg-6 grid-margin">
+      <h5>Administracion</h5>
       <div class="card">
           <div class="card-body">
               <h4 class="card-title">Unidades de Negocio</h4>

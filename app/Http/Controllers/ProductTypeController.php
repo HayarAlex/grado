@@ -6,6 +6,8 @@ use App\ProductType;
 use App\Promotion;
 use App\Team;
 use App\Almacen;
+use App\Product;
+use App\ProductAsig;
 use App\TypeDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt; 
@@ -154,6 +156,34 @@ class ProductTypeController extends Controller
     public function elimpro($id)
     {
         $proces = TypeDetail::findOrFail($id);
+        $proces->delete();
+        return response()->json(['message' => 'Registro eliminado correctamente.']);
+    }
+    public function detAsig($id)
+    {
+        $prodtypes = ProductType::findOrFail($id);
+        $productos = Product::all();
+        $proasignate = ProductAsig::where('proasig_idlinea',$id)->paginate(4);
+        return view('ProductTypes.asignation',[
+            'tipos' => $prodtypes,
+            'productos' => $productos,
+            'proasignate' => $proasignate
+        ]);
+        
+    }
+    public function addproduct(Request $request){
+        
+        $asig = new ProductAsig;
+        $asig->proasig_idlinea = $request->lin;
+        $asig->proasig_code = $request->cod;
+        $asig->proasig_desc = $request->des;
+        $asig->save();
+        $proasignate = ProductAsig::where('proasig_idlinea',$request->lin)->paginate(5);
+        return response()->json($proasignate);
+    }
+    public function elimproduct($id)
+    {
+        $proces = ProductAsig::findOrFail($id);
         $proces->delete();
         return response()->json(['message' => 'Registro eliminado correctamente.']);
     }

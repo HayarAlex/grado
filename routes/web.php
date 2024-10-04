@@ -83,6 +83,9 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/Tipo-de-producto/{id}', 'ProductTypeController@detLinea')->name('productType.detail');
 	Route::post('/Tipo-de-producto/add-etapa', 'ProductTypeController@addetapa');
 	Route::delete('/Tipo-de-producto/elimiprocs/{id}', 'ProductTypeController@elimpro');
+	Route::get('/Tipo-de-producto/asignacion/{id}', 'ProductTypeController@detAsig')->name('productType.asignation');
+	Route::post('/Tipo-de-producto/asignacion/save', 'ProductTypeController@addproduct');
+	Route::delete('/Tipo-de-producto/asignacion/elimiprod/{id}', 'ProductTypeController@elimproduct');
 
 	//rutas para productos
 	Route::get('Producto', 'ProductController@index')->name('product.index');
@@ -152,6 +155,24 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('/Institucional/save/', 'DistributionController@storei')->name('institucion.store');
 	Route::get('/Institucional/Detalle/{id}', 'DistributionController@detinsa')->name('institucion.detpedido');
 	Route::post('/Institucional/savedet/', 'DistributionController@storedeti')->name('distribucion.storedet');
+	//administracion instituciones
+	Route::get('AdminInsti', 'DistributionController@indexadmins')->name('institucion.indexadm');
+	Route::get('/AdminInsti/{id}', 'DistributionController@admpedins')->name('institucion.lisiadm');
+	Route::get('/AdminInsti/Detalle/{id}', 'DistributionController@admdetpedins')->name('institucion.detlisiadm');
+	Route::put('/AdminInsti/confirm/','DistributionController@atenderins')->name('institucion.atencion');
+	Route::put('/AdminInsti/Actualizar/{id}/{pedido}','DistributionController@updateins')->name('institucion.update');
+	//aprobacion de instituciones
+	Route::get('ComInsti', 'DistributionController@indexapro')->name('institucion.indexapro');
+	Route::get('/ComInsti/{id}', 'DistributionController@admlistapro')->name('institucion.lisiadm');
+	Route::get('/ComInsti/Detalle/{id}', 'DistributionController@admdetapro')->name('institucion.detlisiadm');
+	Route::put('/ComInsti/confirm/','DistributionController@confapro')->name('institucion.atencion');
+	Route::put('/ComInsti/confirmre/','DistributionController@confrech')->name('institucion.rechazar');
+	Route::put('/ComInsti/Actualizar/{id}/{pedido}','DistributionController@updateins')->name('institucion.update');
+	//asignacion de unidades de negocio
+	Route::get('Config', 'DistributionController@indexconf')->name('config.index');
+	Route::get('/Config/{id}', 'DistributionController@asiguneg')->name('config.asignation');
+	Route::post('/Config/asignacion/save', 'DistributionController@addunit');
+	Route::delete('/Config/asignacion/elimiuneg/{id}', 'DistributionController@elimuni');
 
 
 	// rutas de ordenes de produccion

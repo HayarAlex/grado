@@ -142,6 +142,23 @@
 	    	</div>
 	  	</div>
 	</div>
+    <div class="col-lg-3 grid-margin">
+      <div class="card">
+          <div class="card-body" style="padding-bottom:2px;">
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <div style="text-align: right;">
+                            <a id="btn-asignation" href="{{ url('/Tipo-de-producto/asignacion/'.$tipos->product_type_id) }}" class="btn btn-lg btn-dark mr-2">
+                                <i class="mdi mdi-flask-empty-outline" style="color:yellow"></i> Asignacion de productos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
 </div>
 
 @endsection
@@ -160,6 +177,9 @@
     $(document).ready(function(){
       //var valor = {{ $tipos->product_type_id }};
       $('#btn-create').on('click', function(){
+        storealm();
+      });
+      $('#btn-asignation').on('click', function(){
         storealm();
       });
     });

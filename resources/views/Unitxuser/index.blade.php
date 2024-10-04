@@ -5,27 +5,32 @@
   <div class="col-lg-6 grid-margin">
       <div class="card">
           <div class="card-body">
-              <h4 class="card-title">Unidades de Negocio</h4>
+                <h4 class="card-title">Asignacion de unidades de negocio</h4>
+                <p class="card-description">
+                    Lista de usuarios
+                </p>
               <div class="table-responsive">
                   <table id="order-listing" class="table table-striped">
                       <thead>
                           <tr>
-                              <th class="text-left">Codigo</th>
+                              <th class="text-left">Id</th>
                               <th class="text-left">Nombre</th>
+                              <th class="text-left">Email</th>
                               <th class="text-center">Acción</th>
                           </tr>
                       </thead>
                       <tbody>
-                        @foreach($unidades as $unid)
+                        @foreach($usuarios as $user)
                           <tr>
-                            <td class="text-left">{{ $unid->usu_iduneg }}</td>
-                            <td class="text-left">{{ $unid->usu_name }}</td>
-                            <td class="text-center"><center><a class="text-center" style="color:#403969" href="{{ url('/Institucional/'.$unid->usu_iduneg) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center></td>
+                            <td class="text-left">{{ $user->id }}</td>
+                            <td class="text-left">{{ $user->name }} {{ $user->paternal }}</td>
+                            <td class="text-left">{{ $user->email }}</td>
+                            <td class="text-center"><center><a class="text-center" style="color:#403969" href="{{ url('/Config/'.$user->id) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center></td>
                           </tr>
                         @endforeach
                       </tbody>
                   </table><br>
-                  <div class="pagination d-flex flex-wrap justify-content-center">{{ $unidades->links() }}</div>
+                  <div class="pagination d-flex flex-wrap justify-content-center">{{ $usuarios->links() }}</div>
               </div>
           </div>
       </div>

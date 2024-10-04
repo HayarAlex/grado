@@ -67,7 +67,8 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmaten()" style="color:white">Confirmar</a>
+                                    <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmaten()" style="color:white">Aprobar</a>
+                                    <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmrecha()" style="color:white">Rechazar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
                                 </div>
                             </div>
@@ -228,7 +229,7 @@
         var obj={
             idped:codigo_pedido
         };
-        axios.put('/AdminInsti/confirm/', obj)
+        axios.put('/ComInsti/confirm/', obj)
             .then(function (response) {
                 //console.log('ok');
                 $.toast({
@@ -240,7 +241,37 @@
                     position: 'bottom-right'
                 })
                 //console.log(response.data);
-                window.location.href="/AdminInsti/"+codigo_uidad;
+                window.location.href="/ComInsti/"+codigo_uidad;
+                //location.reload();
+            })
+            .catch(function (error){
+                $.toast({
+                    heading: 'Alerta!',
+                    text: 'Algo salio mal en la confirmacion.',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#f96868',
+                    position: 'bottom-right'
+                })
+            });
+    }
+    function confirmrecha(){
+        var obj={
+            idped:codigo_pedido
+        };
+        axios.put('/ComInsti/confirmre/', obj)
+            .then(function (response) {
+                //console.log('ok');
+                $.toast({
+                    heading: 'Operación exitosa!',
+                    text: 'Se agrego el registro correctamente.',
+                    showHideTransition: 'slide',
+                    icon: 'success',
+                    loaderBg: '#f96868',
+                    position: 'bottom-right'
+                })
+                //console.log(response.data);
+                window.location.href="/ComInsti/"+codigo_uidad;
                 //location.reload();
             })
             .catch(function (error){

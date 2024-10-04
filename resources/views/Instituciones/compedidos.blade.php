@@ -3,7 +3,7 @@
 @include('layouts.notify')
 <div class="row">
   <div class="col-lg-4 grid-margin">
-        <h5>Administracion de Licitaciones</h5>
+        <h5>Aprobacion de Licitaciones</h5>
       <div class="card">
           <div class="card-body" style="padding-bottom:2px;">
               <h5 class="">Detalle Unidad de negocio</h5>
@@ -51,17 +51,26 @@
                             <td class="text-center">{{$ped->ins_nombre}}</td>
                             <td class="text-center">{{$ped->fecha_soli}}</td>
                             <td class="text-center">{{$ped->fecha_aten}}</td>
-                            @if($ped->ins_state_ate == 0)
-                            <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-clock-alert white" ></i></a>
-                            </td>
-                            @else
-                            <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-clock white" ></i></a>
-                            </td>
-                            @endif
+                            @switch(true)
+                                @case($ped->ins_state_apro == 0)
+                                    <td class="text-center">
+                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-clock-alert white" ></i></a>
+                                    </td>
+                                    @break
+
+                                @case($ped->ins_state_apro == 1)
+                                    <td class="text-center">
+                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-clock-alert white" ></i></a>
+                                    </td>
+                                    @break
+                                @case($ped->ins_state_apro == 2)
+                                    <td class="text-center">
+                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-danger delete-modal btn-sm "><i class="mdi mdi-clock white" ></i></a>
+                                    </td>
+                                    @break
+                            @endswitch
                             <td style="width: 10px">
-                                <center><a class="text-center" style="color:#403969" href="{{ url('/AdminInsti/Detalle/'.$ped->ins_id) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center>
+                                <center><a class="text-center" style="color:#403969" href="{{ url('/ComInsti/Detalle/'.$ped->ins_id) }}"><i class="mdi mdi-arrow-right-bold-circle"></i></a></center>
                             </td>
                           </tr>
                           @endforeach

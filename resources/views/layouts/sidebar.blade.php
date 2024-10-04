@@ -75,7 +75,9 @@
       <div class="collapse" id="insti">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{{ route('institucion.index') }}">Licitaciones</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.indexadm') }}">Adm de Licitaciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('institucion.indexadm') }}">Adm de Licitaciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('institucion.indexapro') }}">Aprobacion de Licitaciones</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('config.index') }}">Asignacion</a></li>
         </ul>
       </div>
     </li>
