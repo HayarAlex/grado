@@ -188,6 +188,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::get('Reportes', 'OrderController@indexrep')->name('report.index');
 	Route::get('/reporte/{ini}/{end}','OrderController@report')->name('report.det');
-	Route::get('/reporte/pdf/{ini}/{fin}', 'OrderController@exportPdf')->name('report.pdf');
+	Route::get('/reporte/excel/{ini}/{fin}', 'OrderController@exportExcel')->name('report.excel');
+
 
 });

@@ -5,11 +5,13 @@
 	<div class="col-lg-10 grid-margin">
 	  	<div class="card">
 	    	<div class="card-body">
-	      		<h4 class="card-title">Reportes</h4>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="card-title">Reportes</h4>
+                    <a href="{{ url('/reporte/excel/' . $ini . '/' . $fin) }}" class="btn btn-outline-success">Exportar a Excel</a>
+                </div>
                     <p class="text-muted font-weight-bold">
                         {{ $ini }} hasta el {{$fin}}
                     </p>
-                    <a href="{{ url('/reporte/pdf/' . $ini . '/' . $fin) }}" class="btn btn-danger">Exportar a PDF</a>
                     <div class="table-responsive">
                         <table class="table table-striped">
                         <thead>

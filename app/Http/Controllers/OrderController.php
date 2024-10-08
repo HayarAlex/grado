@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\Product;
 use App\Follow;
+use App\Exports\ReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -197,66 +199,9 @@ class OrderController extends Controller
         // Retorna la vista y pasa los datos de la consulta a la vista
         return view('Ordenes.detreport', ['list' => $list,'ini' => $ini,'fin' => $fin]);
     }
-    public function exportPdf($ini, $fin)
+    public function exportExcel($ini, $fin)
     {
-        // Consulta para obtener los datos
-        $query = "SELECT f1.flw_order,
-            COALESCE(MIN(CASE WHEN f1.flw_state = 0 THEN f1.flw_step END), MAX(f1.flw_step)) as paso_en_curso,
-            CASE 
-                WHEN MIN(CASE WHEN f1.flw_state = 0 THEN f1.flw_step END) IS NULL THEN 'Concluido'
-                ELSE CONCAT('Paso ', MIN(CASE WHEN f1.flw_state = 0 THEN f1.flw_step END))
-            END as estado,
-            MIN(f1.created_at) AS fecha_creacion,
-            MAX(f1.updated_at) AS fecha_actualizacion
-        FROM follows f1
-        WHERE f1.created_at >= '$ini' AND f1.updated_at < DATE_ADD('$fin', INTERVAL 1 DAY)
-        GROUP BY f1.flw_order";
-
-        $list = DB::select($query);
-
-        // Generar el contenido HTML para el PDF
-        $html = '<h1>Reporte desde ' . $ini . ' hasta ' . $fin . '</h1>';
-        $html .= '<table border="1" cellpadding="5" cellspacing="0">';
-        $html .= '<thead>';
-        $html .= '<tr>';
-        $html .= '<th>Lote</th>';
-        $html .= '<th>Paso en Curso</th>';
-        $html .= '<th>Estado</th>';
-        $html .= '<th>Fecha Inicio</th>';
-        $html .= '<th>Fecha Fin</th>';
-        $html .= '</tr>';
-        $html .= '</thead>';
-        $html .= '<tbody>';
-
-        foreach ($list as $li) {
-            $html .= '<tr>';
-            $html .= '<td>' . $li->flw_order . '</td>';
-            $html .= '<td>' . $li->paso_en_curso . '</td>';
-            $html .= '<td>' . $li->estado . '</td>';
-            $html .= '<td>' . $li->fecha_creacion . '</td>';
-            $html .= '<td>' . $li->fecha_actualizacion . '</td>';
-            $html .= '</tr>';
-        }
-
-        $html .= '</tbody>';
-        $html .= '</table>';
-
-        // Definir el nombre del archivo PDF
-        $pdfFileName = "reporte_{$ini}_{$fin}.pdf";
-
-        // Generar el PDF
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename="' . $pdfFileName . '"');
-        header('Cache-Control: no-cache, no-store, must-revalidate');
-        header('Pragma: no-cache');
-        header('Expires: 0');
-
-        // Usar la función native de PHP para convertir HTML a PDF
-        // Asegúrate de que tu servidor tenga habilitada la extensión `mbstring`
-        echo "<script>window.print();</script>"; // Esto generará un cuadro de diálogo de impresión
-        echo $html; // Esto mostrará el contenido HTML
-
-        exit;
+        return Excel::download(new ReportExport($ini, $fin), "reporte_{$ini}_{$fin}.xlsx");
     }
 
 }
