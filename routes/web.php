@@ -181,4 +181,13 @@ Route::group(['middleware' => ['auth']], function(){
 	
 	Route::get('prom/{id}','OrderController@proemlot');
 	Route::post('generate-lote', 'OrderController@generate');
+
+	Route::get('Seguimiento-produccion', 'OrderController@indexseg')->name('seguimiento.index');
+	Route::get('/Seguimiento-produccion/{id}', 'OrderController@detSeg')->name('seguimiento.detail');
+	Route::put('/Seguimiento-produccion/fin/{id}','OrderController@confimstate')->name('seguimiento.active');
+
+	Route::get('Reportes', 'OrderController@indexrep')->name('report.index');
+	Route::get('/reporte/{ini}/{end}','OrderController@report')->name('report.det');
+	Route::get('/reporte/pdf/{ini}/{fin}', 'OrderController@exportPdf')->name('report.pdf');
+
 });

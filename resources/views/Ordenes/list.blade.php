@@ -17,7 +17,7 @@
 	              <th class="text-center">Lote</th>
                 <th class="text-center">Producto</th>
 	              <th class="text-center">Estado</th>
-	              <th class="text-center">Acciones</th>
+	              <th class="text-center">Fecha registro</th>
 	            </tr>
 	          </thead>
             <tbody>
@@ -27,13 +27,11 @@
 	              <td class="text-center">{{ $order->ord_lot }}</td>
                 <td class="text-center">{{ $order->ord_prod }}</td>
 	              	@if($order->ord_state == 1 )
-	                  <td class="text-center"><label class="badge badge-success">Activo</label></td>
+	                  <td class="text-center"><label class="badge badge-success"><i class="mdi mdi-wrench"></i></label></td>
 	                @else
-	                  <td class="text-center"><label class="badge badge-danger">Inactivo</label></td>
+	                  <td class="text-center"><label class="badge badge-danger"><i class="mdi mdi-alert-octagon"></i></label></td>
 	                @endif
-	              <td style="width: 10px">
-	              	 
-	              </td>
+                <td class="text-center">{{ $order->ord_fecha }}</td>
 	            </tr>
             @endforeach
             </tbody>

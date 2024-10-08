@@ -106,11 +106,18 @@
       <div class="collapse" id="order">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{{ route('order.index') }}">Orden de produccion</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('seguimiento.index') }}">Seguimiento</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('productType.index') }}">Linea de produccion</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('promotion.index') }}">Tareas</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('team.index') }}">Actividades</a></li>
         </ul>
       </div>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('report.index') }}">
+      <i class="mdi mdi-book menu-icon"></i>
+      <span class="menu-title">Reportes</span>
+      </a>
+    </li> 
   </ul>
 </nav>
