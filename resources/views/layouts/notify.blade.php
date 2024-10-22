@@ -100,3 +100,20 @@
     };
 </script>   			
 @endif
+@if(session('status') == 'SinStock')
+<body onload="notifySinStock();"></body>
+<script>
+    function notifySinStock(){
+        'use strict';
+        resetToastPosition();
+        $.toast({
+            heading: 'Sin Stock',
+            text: 'No hay suficiente stock para realizar la operación.',
+            showHideTransition: 'slide',
+            icon: 'error',
+            loaderBg: '#f96868',
+            position: 'bottom-right'
+        });
+    };
+</script>
+@endif

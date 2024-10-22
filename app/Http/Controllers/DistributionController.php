@@ -10,6 +10,8 @@ use App\DisDetail;
 use App\InsDetail;
 use App\UserUnit;
 use App\User;
+use App\Master;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class DistributionController extends Controller
@@ -99,6 +101,13 @@ class DistributionController extends Controller
         $dis->update();
         return Distribution::orderBy("dis_id")->get();
     }
+    public function activateins(Request $request)
+    {
+        $dis = Institution::findOrFail($request->idped);
+        $dis->ins_state_env = 1;
+        $dis->update();
+        return Institution::orderBy("ins_id")->get();
+    }
     public function atender(Request $request)
     {
         $dis = Distribution::findOrFail($request->idped);
@@ -184,9 +193,58 @@ class DistributionController extends Controller
     {
         $dis = DisDetail::findOrFail($prod_id);
         $dis->det_cant = $request->cantidad;
-        $dis->det_state_ate = $request->estado;
-        $dis->save();
-        return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status','Actualizado');
+        
+        if ($request->estado == 1) {
+            // Verificar el stock si el estado es 1
+            $list = Master::join('orders', 'masters.ma_lote', '=', 'orders.ord_lot')
+                ->where('orders.ord_codp', $dis->det_cod)
+                ->groupBy('orders.ord_codp', 'orders.ord_prod')
+                ->select('orders.ord_codp', 'orders.ord_prod', DB::raw('SUM(masters.ma_cantidad) as total'))
+                ->get();
+
+            // Verificar si hay resultados y si la cantidad total es mayor que la solicitada
+            if ($list->count() > 0) {
+                if ($list[0]->total > $request->cantidad) {
+                    // Restar la cantidad solicitada de la tabla 'masters'
+                    $cantidadRestante = $request->cantidad;
+                    $lotes = Master::join('orders', 'masters.ma_lote', '=', 'orders.ord_lot')
+                        ->where('orders.ord_codp', $dis->det_cod)
+                        ->orderBy('masters.created_at', 'asc') // Consumir stock más antiguo primero
+                        ->get();
+
+                    foreach ($lotes as $lote) {
+                        if ($lote->ma_cantidad >= $cantidadRestante) {
+                            // Si este lote puede cubrir la cantidad restante, restarla
+                            $lote->ma_cantidad -= $cantidadRestante;
+                            $lote->save();
+                            break; // Ya cubrimos todo, salir del bucle
+                        } else {
+                            // Si el lote no puede cubrir la cantidad restante, restar todo el lote
+                            $cantidadRestante -= $lote->ma_cantidad;
+                            $lote->ma_cantidad = 0;
+                            $lote->save();
+                        }
+                    }
+
+                    // Actualizar el estado del detalle
+                    $dis->det_state_ate = $request->estado;
+                    $dis->save();
+                    
+                    return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status', 'Actualizado');
+                } else {
+                    // No hay suficiente stock
+                    return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status', 'SinStock');
+                }
+            }
+
+            return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status', 'Error');
+
+        } elseif ($request->estado == 2) {
+            // Si el estado es 2, modificar el estado directamente y guardar
+            $dis->det_state_ate = $request->estado;
+            $dis->save();
+            return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status', 'Actualizado');
+        }
     }
 
     /**
@@ -302,7 +360,7 @@ class DistributionController extends Controller
     {
         $unidades = Unegocio::findOrFail($id);
         $pedidos = Institution::where('ins_uneg', $id)
-                    ->where('ins_state',0)
+                    ->where('ins_state_apro',1)
                     ->orderBy('ins_id', 'desc')
                     ->paginate(5);
         return view('Instituciones.admpedidos',[
@@ -334,11 +392,51 @@ class DistributionController extends Controller
     }
     public function updateins(Request $request, $prod_id,$pedido)
     {
+        
         $dis = InsDetail::findOrFail($prod_id);
         $dis->ins_cant = $request->cantidad;
-        $dis->ins_state_ate = $request->estado;
-        $dis->save();
-        return redirect('/AdminInsti/Detalle/'.$pedido)->with('status','Actualizado');
+        if ($request->estado == 1) {
+            $list = Master::join('orders', 'masters.ma_lote', '=', 'orders.ord_lot')
+                ->where('orders.ord_codp', $dis->ins_cod)
+                ->groupBy('orders.ord_codp', 'orders.ord_prod')
+                ->select('orders.ord_codp', 'orders.ord_prod', DB::raw('SUM(masters.ma_cantidad) as total'))
+                ->get();
+            if ($list->count() > 0) {
+                if ($list[0]->total > $request->cantidad) {
+                    $cantidadRestante = $request->cantidad;
+                    $lotes = Master::join('orders', 'masters.ma_lote', '=', 'orders.ord_lot')
+                        ->where('orders.ord_codp', $dis->ins_cod)
+                        ->orderBy('masters.created_at', 'asc')
+                        ->get();
+        
+                    foreach ($lotes as $lote) {
+                        if ($lote->ma_cantidad >= $cantidadRestante) {
+                            $lote->ma_cantidad -= $cantidadRestante;
+                            $lote->save();
+                            break;
+                        } else {
+                            $cantidadRestante -= $lote->ma_cantidad;
+                            $lote->ma_cantidad = 0;
+                            $lote->save();
+                        }
+                    }
+        
+                    $dis->ins_state_ate = $request->estado;
+                    $dis->save();
+                    
+                    return redirect('/AdminInsti/Detalle/'.$pedido)->with('status', 'Actualizado');
+                } else {
+                    return redirect('/AdminInsti/Detalle/'.$pedido)->with('status', 'SinStock');
+                }
+            }
+        
+            return redirect('/AdminInsti/Detalle/'.$pedido)->with('status', 'Error');
+        
+        } elseif ($request->estado == 2) {
+            $dis->ins_state_ate = $request->estado;
+            $dis->save();
+            return redirect('/AdminInsti/Detalle/'.$pedido)->with('status', 'Actualizado');
+        }
     }
     public function indexapro()
     {
@@ -353,7 +451,7 @@ class DistributionController extends Controller
     {
         $unidades = Unegocio::findOrFail($id);
         $pedidos = Institution::where('ins_uneg', $id)
-                    ->where('ins_state',0)
+                    ->where('ins_state_env',1)
                     ->orderBy('ins_id', 'desc')
                     ->paginate(5);
         return view('Instituciones.compedidos',[
@@ -363,6 +461,29 @@ class DistributionController extends Controller
     }
     public function admdetapro($id)
     {
+        $ventas = DB::table('institutions')
+            ->join('ins_details', 'institutions.ins_id', '=', 'ins_details.ins_ped')
+            ->leftJoin('ventas', function ($join) {
+                $join->on(DB::raw('LOWER(TRIM(ventas.vtnvacart))'), '=', DB::raw('LOWER(TRIM(ins_details.ins_cod))'));
+            })
+            ->select(
+                'ins_details.ins_cod',
+                'ins_details.ins_desc',
+                'institutions.ins_uneg',
+                DB::raw("SUM(CASE 
+                            WHEN ventas.vtnvaftra BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH) 
+                            AND LAST_DAY(DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH))
+                            AND LOWER(TRIM(ventas.vtnvauneg)) = LOWER(TRIM(institutions.ins_uneg)) 
+                            THEN ventas.vtnvacven ELSE 0 END) AS cantidad_mes_anterior"),
+                DB::raw("SUM(CASE 
+                            WHEN ventas.vtnvaftra BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 2 MONTH) 
+                            AND LAST_DAY(DATE_SUB(CURRENT_DATE, INTERVAL 2 MONTH))
+                            AND LOWER(TRIM(ventas.vtnvauneg)) = LOWER(TRIM(institutions.ins_uneg)) 
+                            THEN ventas.vtnvacven ELSE 0 END) AS cantidad_mes_anteriores")
+            )
+            ->where('institutions.ins_id', $id)
+            ->groupBy('ins_details.ins_cod', 'ins_details.ins_desc', 'institutions.ins_uneg')
+            ->get();
         $pedidos = Institution::findOrFail($id);
         $unidades = Unegocio::findOrFail($pedidos->ins_uneg);
         $productos = Product::all();
@@ -372,7 +493,8 @@ class DistributionController extends Controller
             'unidades' => $unidades,
             'pedidos' => $pedidos,
             'productos' => $productos,
-            'listprods' => $listprods
+            'listprods' => $listprods,
+            'ventas' => $ventas
         ]);
     }
     public function confapro(Request $request)

@@ -32,9 +32,21 @@
             @endforeach
             </tbody>
 	        </table><br>
+			<div class="pagination d-flex flex-wrap justify-content-center">{{ $ordenes->links() }}</div>
 	      </div>
 	    </div>
 	  </div>
+	</div>
+	<div class="col-lg-10 grid-margin stretch-card">
+		<div class="card">
+		<div class="card-body">
+			<h4 class="card-title">Avance por lote</h4>
+			<canvas id="followChart"></canvas>
+		</div>
+		</div>
+	</div>
+	<div>
+		<canvas id="myChart" width="400" height="200"></canvas>
 	</div>
 </div>
 
@@ -51,21 +63,68 @@
 <script src="../../../../js/typeahead.js"></script>
 <script src="../../../../js/select2.js"></script>
 <script>
-    $(document).ready(function(){
-      var valor = 1;
-      axios.get('prom/'+valor)
-        .then(function (response){
-          console.log(response.data);
-        })
-        .then(function(){
 
-        });
-      $('#btn-create').on('click', function(){
-        guardar();
-      });
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('followChart').getContext('2d');
+
+    // Obtén las fechas directamente
+    const originalDates = {!! $dates !!}; // Fechas originales
+
+    // Formatear las fechas para que solo contengan el día
+    const labels = originalDates.map(date => date.split('T')[0]); // Si las fechas están en formato ISO
+
+    const datasets = [];
+    const chartData = {!! $chartData !!}; // Pasos para cada lote
+
+    // Alinear los datos con las fechas
+    for (const lote in chartData) {
+        if (chartData.hasOwnProperty(lote) && Array.isArray(chartData[lote])) {
+            // Crear un arreglo de pasos inicializado en 0 para cada fecha
+            const steps = labels.map(label => {
+                const entry = chartData[lote].find(entry => entry.date === label);
+                return entry ? entry.step : 0; // Usar 0 si no hay datos para esa fecha
+            });
+
+            // Generar colores aleatorios para cada lote
+            const borderColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+
+            datasets.push({
+                label: `Lote ${lote}`,
+                data: steps,
+                borderColor: borderColor, // Color del borde
+                fill: false,
+            });
+        }
+    }
+
+    const followChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Paso'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Fecha'
+                    }
+                }
+            }
+        }
     });
-    
-    // alert('hola');
+});
+
+
 </script>
 @endsection
 

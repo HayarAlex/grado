@@ -81,7 +81,6 @@
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmped()" style="color:white">Confirmar</a>
-                                    <a class="btn btn-danger font-weight-medium auth-form-btn btn-sm" onclick="cancel()" style="color:white">cancelar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
                                 </div>
                             </div>
@@ -147,10 +146,10 @@
                     <tbody>
                         @foreach($listprods as $detail)
                         <tr>
-                            <td class="text-center">{{$detail->det_cod}}</td>
-                            <td class="text-center">{{$detail->det_desc}}</td>
-                            <td class="text-center">{{$detail->det_cant}}</td>
-                            @if($detail->det_state_ate == 0)
+                            <td class="text-center">{{$detail->ins_cod}}</td>
+                            <td class="text-center">{{$detail->ins_desc}}</td>
+                            <td class="text-center">{{$detail->ins_cant}}</td>
+                            @if($detail->ins_state_ate == 0)
                             <td class="text-center">
                                 <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-bell white" ></i></a>
                             </td>
@@ -160,7 +159,7 @@
                             </td>
                             @endif
                             <td class="text-center">
-                                <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $detail->det_id }}" data-state="{{ $detail->det_state_ate }}" data-name="{{ $detail->det_cod }}" data-description="{{ $detail->det_desc }}" data-cantidad="{{ $detail->det_cant }}" data-idpedido="{{ $detail->det_ped }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
+                                <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $detail->detins_id }}" data-state="{{ $detail->ins_state_ate }}" data-name="{{ $detail->ins_cod }}" data-description="{{ $detail->ins_desc }}" data-cantidad="{{ $detail->ins_cant }}" data-idpedido="{{ $detail->ins_ped }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
                             </td>
                         </tr>
                         @endforeach
@@ -293,7 +292,7 @@
         var obj={
             idped:codigo_pedido
         };
-        axios.put('/Distribucion/confirm/', obj)
+        axios.put('/Institucional/confirm/', obj)
             .then(function (response) {
                 //console.log('ok');
                 $.toast({
@@ -305,7 +304,7 @@
                     position: 'bottom-right'
                 })
                 console.log(response.data);
-                window.location.href="/Distribucion/"+codigo_uidad;
+                window.location.href="/Institucional/"+codigo_uidad;
                 //location.reload();
             })
             .catch(function (error){

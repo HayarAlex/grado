@@ -177,6 +177,7 @@ class ProductTypeController extends Controller
         $asig->proasig_idlinea = $request->lin;
         $asig->proasig_code = $request->cod;
         $asig->proasig_desc = $request->des;
+        $asig->proasig_state = $request->cantidad;
         $asig->save();
         $proasignate = ProductAsig::where('proasig_idlinea',$request->lin)->paginate(5);
         return response()->json($proasignate);

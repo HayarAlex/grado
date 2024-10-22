@@ -68,7 +68,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmaten()" style="color:white">Aprobar</a>
-                                    <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmrecha()" style="color:white">Rechazar</a>
+                                    <a class="btn btn-danger font-weight-small auth-form-btn btn-sm" onclick="confirmrecha()" style="color:white">Rechazar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
                                 </div>
                             </div>
@@ -126,6 +126,36 @@
                     </tbody>
                     </table><br>
                     <div class="pagination d-flex flex-wrap justify-content-center">{{ $listprods->links() }}</div>
+                </div>
+                </div>
+            </div><br>
+            <div class="card">
+                <div class="card-body" style="padding-bottom:2px;">
+                <h5 class="">Lista de indicadores</h5>
+                <p class="card-description">
+                    Ventas
+                </p>
+                <div class="table-responsive">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th class="text-center"><p class="text-muted font-weight-bold text-small">Codigo</p></th>
+                        <th class="text-center"><p class="text-muted font-weight-bold text-small">Producto</p></th>
+                        <th class="text-center"><p class="text-muted font-weight-bold text-small">Ventas mes anterior</p></th>
+                        <th class="text-center"><p class="text-muted font-weight-bold text-small">Ventas anteriores 2 meses</p></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-ventas">
+                    @foreach($ventas as $ven)
+                        <tr>
+                        <td class="text-center">{{ $ven->ins_cod }}</td>
+                        <td class="text-center">{{ $ven->ins_desc }}</td>
+                        <td class="text-center">{{ $ven->cantidad_mes_anterior }}</td>
+                        <td class="text-center">{{ $ven->cantidad_mes_anteriores }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    </table>
                 </div>
                 </div>
             </div>

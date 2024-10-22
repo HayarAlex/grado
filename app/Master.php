@@ -1,0 +1,12 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Master extends Model
+{
+    //
+    protected $table = 'masters';
+    protected $primaryKey = 'ma_id';
+}

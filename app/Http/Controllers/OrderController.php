@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\Product;
 use App\Follow;
+use App\Master;
 use App\Exports\ReportExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -77,7 +78,7 @@ class OrderController extends Controller
         $gen->ord_fecha = date('Y-m-d');
         $gen->ord_state = 1;
         $gen->save();
-        $query = "select ord_lot, tipd_orden,tipd_actividad
+        $query = "select ord_lot, tipd_orden,tipd_actividad,tipd_almdestino,proasig_state
                     from orders 
                     join product_asignates on ord_codp = proasig_code 
                     join product_types on product_asignates.proasig_idlinea = product_types.product_type_id
@@ -91,6 +92,8 @@ class OrderController extends Controller
             $fol->flw_order = $list[$i]->ord_lot;
             $fol->flw_step = $list[$i]->tipd_orden;
             $fol->flw_stepdesc= $list[$i]->tipd_actividad;
+            $fol->flw_almacen= $list[$i]->tipd_almdestino;
+            $fol->flw_cant= $list[$i]->proasig_state;
             $fol->flw_state=0;
             $fol->save();
         }
@@ -158,7 +161,54 @@ class OrderController extends Controller
             })
             ->where('follows.flw_state', 0)
             ->paginate(5);
-        return view('Ordenes.seguimiento',['ordenes' => $orders]);
+        $huh = DB::select("
+            SELECT f1.flw_order, f1.flw_step, f1.updated_at, f1.flw_state
+            FROM follows f1
+            WHERE f1.flw_state IN (0, 1)
+            AND f1.flw_order IN (
+                SELECT flw_order
+                FROM follows
+                WHERE flw_state = 0
+            )
+            ORDER BY f1.flw_order, f1.flw_step
+        ");
+    
+        $chartData = [];
+        $dataCounts = [];
+        $dates = [];
+    
+        foreach ($huh as $order) {
+            $lote = $order->flw_order;
+            $step = $order->flw_step;
+            $date = $order->updated_at;
+    
+            // Inicializar si no existe
+            if (!isset($chartData[$lote])) {
+                $chartData[$lote] = []; // Inicializa como un array si no existe
+                $dataCounts[$lote] = []; // También inicializa dataCounts
+            }
+    
+            // Agregar paso y fecha
+            $chartData[$lote][] = [
+                'step' => $step,
+                'date' => $date,
+            ];
+    
+            // Contar los pasos
+            $dataCounts[$lote][] = $step;
+    
+            // Agregar fechas únicas
+            if (!in_array($date, $dates)) {
+                $dates[] = $date;
+            }
+        }
+    
+        return view('Ordenes.seguimiento', [
+            'ordenes' => $orders,
+            'dates' => json_encode($dates),
+            'dataCounts' => json_encode($dataCounts),
+            'chartData' => json_encode($chartData), // Asegúrate de pasar chartData a la vista
+        ]);
     }
     public function detSeg($id)
     {
@@ -173,6 +223,24 @@ class OrderController extends Controller
         $fol = Follow::findOrFail($id);
         $fol->flw_state = 1;
         $fol->save();
+        $query = "SELECT flw_order,flw_cant
+                FROM follows
+                WHERE flw_order = '$fol->flw_order'
+                GROUP BY flw_order,flw_cant
+                HAVING SUM(CASE WHEN flw_state != 1 THEN 1 ELSE 0 END) = 0";
+        $list = DB::select($query);
+        $tamaño = count($list);
+        if ($tamaño > 0) {
+            for ($i=0; $i < $tamaño; $i++) { 
+                $ma = new Master;
+                $ma->ma_lote = $list[$i]->flw_order;
+                $ma->ma_cantidad = $list[$i]->flw_cant;
+                $ma->ma_almacen= 'Almacen';
+                $ma->ma_fecha= date('Y-m-d H:i:s');
+                $ma->save();
+            }
+            
+        }
         return redirect()->route('seguimiento.index')->with('status','Desactivado');
     }
 
@@ -183,6 +251,7 @@ class OrderController extends Controller
     public function report($ini,$fin)
     {
         $query = "SELECT f1.flw_order,
+            MIN(f1.flw_almacen) AS flw_almacen,
             COALESCE(MIN(CASE WHEN f1.flw_state = 0 THEN f1.flw_step END), MAX(f1.flw_step)) as paso_en_curso,
             CASE 
                 WHEN MIN(CASE WHEN f1.flw_state = 0 THEN f1.flw_step END) IS NULL THEN 'Concluido'
@@ -202,6 +271,15 @@ class OrderController extends Controller
     public function exportExcel($ini, $fin)
     {
         return Excel::download(new ReportExport($ini, $fin), "reporte_{$ini}_{$fin}.xlsx");
+    }
+
+    public function indexmaster()
+    {
+        $results = Master::join('orders', 'masters.ma_lote', '=', 'orders.ord_lot')
+                ->select('masters.*', 'orders.*')
+                ->orderBy('ma_id','desc')
+                ->paginate(5);
+        return view('Ordenes.maestro',['ordenes' => $results]);
     }
 
 }

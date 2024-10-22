@@ -17,6 +17,7 @@
                         <thead>
                             <tr>
                             <th class="text-center">Lote</th>
+                            <th class="text-center">Almacen atual</th>
                             <th class="text-center">Paso en curso</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Fecha inicio</th>
@@ -27,6 +28,7 @@
                         @foreach($list as $li)
                             <tr>
                             <td class="text-center">{{ $li->flw_order }}</td>
+                            <td class="text-center">{{ $li->flw_almacen }}</td>
                             <td class="text-center">{{ $li->paso_en_curso }}</td>
                             <td class="text-center">{{ $li->estado }}</td>
                             <td class="text-center">{{ $li->fecha_creacion }}</td>

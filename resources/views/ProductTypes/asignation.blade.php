@@ -27,7 +27,7 @@
           </div>
       </div>
   </div>
-    <div class="col-lg-4 grid-margin">
+    <div class="col-lg-6 grid-margin">
         
         <div>
             <div class="card">
@@ -36,9 +36,9 @@
                     <form action="" enctype="multipart/from-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-10">
                                     <div class="form-group row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <label for=""><a style="color: red">*</a>Seleccionar producto:</label>
                                         <select id="prod" name="prod" class="js-example-basic-single w-100">
                                             <option value="0">Seleccione un producto</option>
@@ -46,10 +46,15 @@
                                                 <option value="{{ $prod->prod_cod}}">{{ $prod->prod_desc }}</option>
                                             @endforeach
                                         </select>
+                                        
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for=""><a style="color: red">*</a>Cantidad Prod:</label>
+                                        <input id="canti" type="text" name="canti" class="form-control" placeholder="Cantidad"/>
                                     </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <br>
@@ -152,10 +157,12 @@
         var codigo = document.getElementById("prod").value;
         var combo = document.getElementById("prod");
         var selected = combo.options[combo.selectedIndex].text;
+        var cantida = document.getElementById("canti").value;
         var obj ={
             lin:codigo_linea,
             cod:codigo,
-            des:selected
+            des:selected,
+            cantidad:cantida
         };
         axios.post('/Tipo-de-producto/asignacion/save', obj)
             .then(function (response) {

@@ -154,7 +154,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/Institucional/{id}', 'DistributionController@newlic')->name('institucion.unidad');
 	Route::post('/Institucional/save/', 'DistributionController@storei')->name('institucion.store');
 	Route::get('/Institucional/Detalle/{id}', 'DistributionController@detinsa')->name('institucion.detpedido');
-	Route::post('/Institucional/savedet/', 'DistributionController@storedeti')->name('distribucion.storedet');
+	Route::post('/Institucional/savedet/', 'DistributionController@storedeti')->name('institucion.storedet');
+	Route::put('/Institucional/confirm/','DistributionController@activateins')->name('institucion.active');
 	//administracion instituciones
 	Route::get('AdminInsti', 'DistributionController@indexadmins')->name('institucion.indexadm');
 	Route::get('/AdminInsti/{id}', 'DistributionController@admpedins')->name('institucion.lisiadm');
@@ -189,6 +190,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('Reportes', 'OrderController@indexrep')->name('report.index');
 	Route::get('/reporte/{ini}/{end}','OrderController@report')->name('report.det');
 	Route::get('/reporte/excel/{ini}/{fin}', 'OrderController@exportExcel')->name('report.excel');
+
+	Route::get('Maestro-produccion', 'OrderController@indexmaster')->name('maestro.index');
 
 
 });

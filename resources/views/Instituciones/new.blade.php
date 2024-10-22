@@ -47,7 +47,7 @@
                         <div class="col-sm-12">
                             <label for=""><a style="color: red">*</a>Observacion:</label>
 			                <input id="obs" type="text" name="obs" class="form-control" placeholder="Ingrese nombre"/>
-                        </div>
+                        </div><br>
                         <div class="col-sm-12">
                             <a class="btn btn-primary font-weight-medium auth-form-btn" onclick="send()" style="color:white">Nuevo Pedido</a>
                         </div>
@@ -142,18 +142,11 @@
                     loaderBg: '#f96868',
                     position: 'bottom-right'
                 })
-                windows.reload();
+                location.reload();
                 //console.log(response.data);
             })
             .catch(function (error){
-                $.toast({
-                    heading: 'Alerta!',
-                    text: 'Algo salio mal.',
-                    showHideTransition: 'slide',
-                    icon: 'warning',
-                    loaderBg: '#f96868',
-                    position: 'bottom-right'
-                })
+                location.reload();
             });
     }
 </script>

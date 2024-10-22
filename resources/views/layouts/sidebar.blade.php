@@ -110,6 +110,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ route('productType.index') }}">Linea de produccion</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('promotion.index') }}">Tareas</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('team.index') }}">Actividades</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('maestro.index') }}">Registro maestro</a></li>
         </ul>
       </div>
     </li>

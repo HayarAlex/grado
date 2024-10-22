@@ -24,6 +24,7 @@ class ReportExport implements FromCollection, WithHeadings, WithCustomStartCell,
     public function collection()
     {
         return collect(DB::select("SELECT f1.flw_order,
+            MIN(f1.flw_almacen) AS flw_almacen,
             COALESCE(MIN(CASE WHEN f1.flw_state = 0 THEN f1.flw_step END), MAX(f1.flw_step)) as paso_en_curso,
             CASE 
                 WHEN MIN(CASE WHEN f1.flw_state = 0 THEN f1.flw_step END) IS NULL THEN 'Concluido'
@@ -41,6 +42,7 @@ class ReportExport implements FromCollection, WithHeadings, WithCustomStartCell,
     {
         return [
             'Lote',
+            'Almacen actual',
             'Paso en Curso',
             'Estado',
             'Fecha Inicio',

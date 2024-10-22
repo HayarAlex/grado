@@ -6,9 +6,9 @@
       <div class="card">
           <div class="card-body">
               <h4 class="card-title">Lista de Productos</h4>
-              <div style="text-align: right;">
+              {{--<div style="text-align: right;">
                   <a class="btn btn-primary font-weight-medium auth-form-btn" href="{{ route('product.new') }}">agregar producto</a>
-              </div><br>
+              </div><br>--}}
               {{-- <div class="col-md-4" style="float: right;margin-right: -15px;">
                 <form action="{{ route('customer.index') }}" method="GET">
                   <div class="form-group" >
