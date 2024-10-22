@@ -282,4 +282,30 @@ class OrderController extends Controller
         return view('Ordenes.maestro',['ordenes' => $results]);
     }
 
+    public function cprod($id){
+        $query = "SELECT 
+            COUNT(dis_id) AS totald,
+            SUM(CASE WHEN dis_state_ate = 0 THEN 1 ELSE 0 END) AS pendientesd,
+            SUM(CASE WHEN dis_state_ate = 1 THEN 1 ELSE 0 END) AS atendidosd
+        FROM 
+            distributions";
+        $list = DB::select($query);
+        $queryin = "SELECT 
+            COUNT(ins_id) AS total,
+            SUM(CASE WHEN ins_state_ate = 0 THEN 1 ELSE 0 END) AS pendientes,
+            SUM(CASE WHEN ins_state_ate = 1 THEN 1 ELSE 0 END) AS atendidos
+        FROM 
+            institutions";
+        $listin = DB::select($queryin);
+        $result = [
+            'total_pedidosad' => $list[0]->totald ?? 0,
+            'pendientesd' => $list[0]->pendientesd ?? 0,
+            'atendidosd' => $list[0]->atendidosd ?? 0,
+            'total_ins' => $listin[0]->total ?? 0,
+            'pendientes' => $listin[0]->pendientes ?? 0,
+            'atendidos' => $listin[0]->atendidos ?? 0,
+        ];
+        return $result;
+    }
+
 }

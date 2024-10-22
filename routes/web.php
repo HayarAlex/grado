@@ -194,4 +194,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('Maestro-produccion', 'OrderController@indexmaster')->name('maestro.index');
 
 
+	//rutas de dashboard
+	Route::get('cantprod/{id}','OrderController@cprod');
+
+
 });
