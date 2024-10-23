@@ -308,4 +308,11 @@ class OrderController extends Controller
         return $result;
     }
 
+    public function prodplus($id){
+        $query = "select count(prod_id) as produ  from products";
+        $prods = DB::select($query);
+        return $prods;
+
+    }
+
 }
