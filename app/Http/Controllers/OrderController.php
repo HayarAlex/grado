@@ -314,5 +314,24 @@ class OrderController extends Controller
         return $prods;
 
     }
+    public function ventasmeses(){
+        $query = "SELECT DATE_FORMAT(vtnvaftra, '%Y-%m') AS mes, SUM(vtnvacven) AS total_ventas
+                FROM ventas
+                WHERE vtnvaftra >= DATE_SUB(CURDATE(), INTERVAL 5 MONTH)
+                GROUP BY mes
+                ORDER BY mes Asc";
+        $ventas = DB::select($query);
+        return $ventas;
+
+    }
+    public function ranking(){
+        $query = "SELECT vtnvauneg AS sucursal, SUM(vtnvacven) AS total_ventas
+                    FROM ventas
+                    GROUP BY vtnvauneg
+                    ORDER BY total_ventas desc limit 5;";
+        $rakis = DB::select($query);
+        return $rakis;
+
+    }
 
 }

@@ -121,15 +121,15 @@
   <div class="col-lg-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Line chart</h4>
-        <canvas id="lineChart"></canvas>
+        <h4 class="card-title">Cantidad productos vendidos</h4>
+        <canvas id="lineCharta"></canvas>
       </div>
     </div>
   </div>
   <div class="col-lg-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Bar chart</h4>
+        <h4 class="card-title">Ranking de ventas por sucursal</h4>
         <canvas id="barCharta"></canvas>
       </div>
     </div>
@@ -173,43 +173,116 @@
       $('#btn-create').on('click', function(){
         guardar();
       });
-    });
-    var sucursales = ["Sucursal 4", "Sucursal 2", "Sucursal 3", "Sucursal 1", "Sucursal 8"];
-    var totalVentas = [348199, 230687, 145196, 119615, 77345];
+      $.ajax({
+        url: '/venmes',
+        method: 'GET',
+        success: function(response) {
+          var labels = response.map(function(item) {
+            return item.mes;
+          });
+          var totalVentas = response.map(function(item) {
+            return item.total_ventas; 
+          });
 
-    // Configuración del gráfico
-    var ctx = document.getElementById('barCharta').getContext('2d');
-    var barChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: sucursales, // Nombres de las sucursales
-            datasets: [{
-                label: 'Total de Ventas',
-                data: totalVentas, // Totales de ventas
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+          var data = {
+              labels: labels, 
+              datasets: [{
+                  label: 'Total de Ventas',
+                  data: totalVentas, 
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  fill: true,
+                  tension: 0.1
+              }]
+          };
+
+          var config = {
+              type: 'line',
+              data: data,
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true
+                      }
+                  }
+              }
+          };
+          var lineChart = new Chart(
+              document.getElementById('lineCharta'),
+              config
+          );
         }
+      });
+
+      var sucursalesMap = {
+        4: "Santa Cruz",
+        2: "La Paz",
+        3: "Cochabamba",
+        1: "Oficina central",
+        8: "Potosí"
+      };
+      var colorsMap = {
+        4: 'rgba(255, 99, 132, 0.6)',
+        2: 'rgba(54, 162, 235, 0.6)', 
+        3: 'rgba(255, 206, 86, 0.6)', 
+        1: 'rgba(75, 192, 192, 0.6)', 
+        8: 'rgba(153, 102, 255, 0.6)'
+      };
+
+      var borderColorMap = {
+        4: 'rgba(255, 99, 132, 1)', 
+        2: 'rgba(54, 162, 235, 1)',  
+        3: 'rgba(255, 206, 86, 1)', 
+        1: 'rgba(75, 192, 192, 1)',  
+        8: 'rgba(153, 102, 255, 1)'
+      };
+      $.ajax({
+        url: '/rank', 
+        method: 'GET',
+        success: function(response) {
+          var labels = response.map(function(item) {
+            return sucursalesMap[item.sucursal] || 'Sucursal desconocida'; 
+          });
+          var totalVentas = response.map(function(item) {
+            return item.total_ventas; 
+          });
+          var backgroundColors = response.map(function(item) {
+            return colorsMap[item.sucursal] || 'rgba(0, 0, 0, 0.1)'; 
+          });
+          var borderColors = response.map(function(item) {
+            return borderColorMap[item.sucursal] || 'rgba(0, 0, 0, 1)'; 
+          });
+
+          var data = {
+              labels: labels, 
+              datasets: [{
+                  label: 'Total de Ventas',
+                  data: totalVentas, 
+                  backgroundColor: backgroundColors,
+                  borderColor: borderColors,
+                  borderWidth: 1
+              }]
+          };
+
+          var config = {
+              type: 'bar',
+              data: data,
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true 
+                      }
+                  }
+              }
+          };
+
+          var barChart = new Chart(
+              document.getElementById('barCharta'),
+              config
+          );
+        }
+      });
     });
+    
 </script>
 @endsection

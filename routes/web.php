@@ -197,5 +197,7 @@ Route::group(['middleware' => ['auth']], function(){
 	//rutas de dashboard
 	Route::get('cantprod/{id}','OrderController@cprod');
 	Route::get('produ/{id}','OrderController@prodplus');
+	Route::get('venmes','OrderController@ventasmeses');
+	Route::get('rank','OrderController@ranking');
 
 });
