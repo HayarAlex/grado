@@ -6,7 +6,7 @@
     <div class="col-lg-6 d-flex align-items-center justify-content-center">
       <div class="auth-form-transparent text-left p-3">
         <div class="brand-logo">
-          <img src="../../../../images/logo-dark.svg" alt="logo">
+          <img style="border-radius: 20px" src="../../images/faces/images.png" alt="image">
         </div>
         <h4>Bienvenido!</h4>
         <form class="pt-3" method="POST" action="{{ route('login') }}">
