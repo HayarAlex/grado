@@ -550,5 +550,10 @@ class DistributionController extends Controller
         $proces->delete();
         return response()->json(['message' => 'Registro eliminado correctamente.']);
     }
+    public function validaciones($id){
+        $query = "select coalesce(count(det_id),0) as vali from dis_details where det_ped = '$id'";
+        $list = DB::select($query);
+        return $list;
+    }
 
 }

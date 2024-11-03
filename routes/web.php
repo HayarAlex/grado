@@ -143,6 +143,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::put('/Distribucion/confirm/','DistributionController@activate')->name('distribucion.active');
 	Route::put('/Distribucion/cancel/','DistributionController@cancelar')->name('distribucion.cancel');
 	Route::put('/Distribucion/Actualizar/{id}/{pedido}','DistributionController@update')->name('almacen.update');
+	Route::get('/Distribucion/vali/{id}','DistributionController@validaciones');
 	// administracion de pedidos-distribucion
 	Route::get('AdminDistribucion', 'DistributionController@indexadm')->name('distribucion.indexadm');
 	Route::get('/AdminDistribucion/{id}', 'DistributionController@admped')->name('distribucion.pedidosadm');
@@ -200,4 +201,5 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('venmes','OrderController@ventasmeses');
 	Route::get('rank','OrderController@ranking');
 
+	
 });

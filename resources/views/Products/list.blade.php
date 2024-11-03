@@ -2,7 +2,7 @@
 @section('content')
 @include('layouts.notify')
 <div class="row">
-  <div class="col-lg-12 grid-margin">
+  <div class="col-lg-9 grid-margin">
       <div class="card">
           <div class="card-body">
               <h4 class="card-title">Lista de Productos</h4>
@@ -30,7 +30,6 @@
                               <th class="text-center">Descripcion</th>
                               <th class="text-center">U/M</th>
                               <th class="text-center">Estado</th>
-                              <th class="text-center">Acción</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -45,11 +44,6 @@
                             @else
                               <td class="text-center"><label class="badge badge-danger">Inactivo</label></td>
                             @endif
-                            <td style="width: 10px">
-                              <a href="#" id="br" class="btn btn-danger delete-modal btn-sm " data-toggle="modal" data-target="#exampleModal-2"><i class="mdi mdi-close white" ></i></a>
-                              <a class="btn btn-primary btn-sm" id="br" href="#" ><i class="mdi mdi-border-color white" ></i></a>
-                              <a class="btn btn-dark btn-sm elim-modal" id="br" href="#"  data-toggle="modal" data-target="#exampleModal-2"><i class="mdi mdi-delete white" ></i></a>
-                            </td>
                           </tr>
                         @endforeach
                       </tbody>

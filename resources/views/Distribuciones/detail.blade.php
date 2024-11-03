@@ -67,7 +67,7 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmped()" style="color:white">Confirmar</a>
+                                    <a id="confirmButton" class="btn btn-success font-weight-small auth-form-btn btn-sm" style="color:white">Confirmar</a>
                                     <a class="btn btn-danger font-weight-medium auth-form-btn btn-sm" onclick="cancel()" style="color:white">cancelar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
                                 </div>
@@ -104,7 +104,7 @@
                                     <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label for=""><a style="color: red">*</a>Cantidad:</label>
-                                        <input id="pat" type="text" name="description" class="form-control" placeholder="Ingrese cantidad"/>
+                                        <input id="pat" type="number" name="description" class="form-control" placeholder="Ingrese cantidad"/>
                                     </div>
                                     </div>
                                 </div>
@@ -238,6 +238,28 @@
     var codigo_pedido = {{ $pedidos->dis_id}};
     //console.log(codigo_uidad);
     //console.log(codigo_pedido);
+    axios.get('/Distribucion/vali/'+codigo_pedido)
+        .then(function (response){
+            console.log(response.data[0].vali);
+            document.getElementById("confirmButton").onclick = function() {
+                if (response.data[0].vali != 0) {
+                    confirmped();
+                } else {
+                    $.toast({
+                    heading: 'Alerta!',
+                    text: 'Pedidos sin articulos.',
+                    showHideTransition: 'slide',
+                    icon: 'warning',
+                    loaderBg: '#f96868',
+                    position: 'bottom-right'
+                })
+                }
+            };
+        })
+        .then(function(){
+
+        });
+    
     function senddet() {
         var codigo = document.getElementById("prod").value;
         var combo = document.getElementById("prod");

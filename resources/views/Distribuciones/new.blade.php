@@ -107,6 +107,7 @@
                     position: 'bottom-right'
                 })
                 console.log(response.data);
+                location.reload();
             })
             .catch(function (error){
                 $.toast({
