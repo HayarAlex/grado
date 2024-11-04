@@ -200,6 +200,7 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('produ/{id}','OrderController@prodplus');
 	Route::get('venmes','OrderController@ventasmeses');
 	Route::get('rank','OrderController@ranking');
+	Route::get('/produx','OrderController@prodsele');
 
 	
 });

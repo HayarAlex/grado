@@ -135,6 +135,21 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-lg-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Ranking de productos mas vendidos</h4>
+        <select id="producto-select" class="js-example-basic-single w-100">
+          @foreach ($productos as $producto)
+              <option value="{{ $producto->prod_cod }}">{{ $producto->prod_desc }}</option>
+          @endforeach
+        </select>
+        <canvas id="ventasChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('script')
 <script src="../../../../js/off-canvas.js"></script>
@@ -170,6 +185,52 @@
         .then(function(){
 
         });
+      const ctx = document.getElementById('ventasChart').getContext('2d');
+      let ventasChart;
+      $('#producto-select').on('change', function () {
+          cargarDatosYActualizarGrafico(this.value);
+      });
+
+      // Cargar el gráfico inicialmente
+      cargarDatosYActualizarGrafico($('#producto-select').val());
+      async function cargarDatosYActualizarGrafico(productoId) {
+        try {
+            const response = await axios.get(`/produx`, {
+                params: { producto_id: productoId }
+            });
+            const data = response.data;
+
+            const labels = data.map(item => item.mes);
+            const ventas = data.map(item => item.total_ventas);
+
+            if (ventasChart) {
+                ventasChart.destroy();
+            }
+
+            ventasChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ventas',
+                        data: ventas,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                }
+            });
+        } catch (error) {
+            console.error("Error al cargar los datos: ", error);
+        }
+      }
+      // axios.get('/produx')
+      //   .then(function (response){
+      //     console.log(response.data);
+      //   })
+      //   .then(function(){
+
+      //   });
       $('#btn-create').on('click', function(){
         guardar();
       });

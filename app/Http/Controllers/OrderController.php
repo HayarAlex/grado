@@ -314,6 +314,25 @@ class OrderController extends Controller
         return $prods;
 
     }
+    public function prodsele(Request $request){
+        $productoId = $request->input('producto_id');
+        $query = "SELECT 
+                DATE_FORMAT(vtnvaftra, '%Y-%m') AS mes, 
+                vtnvacart, 
+                SUM(vtnvacven) AS total_ventas
+            FROM 
+                ventas
+            WHERE 
+                vtnvacart LIKE '%$productoId%'
+                AND vtnvaftra >= DATE_SUB(CURDATE(), INTERVAL 5 MONTH)
+            GROUP BY 
+                mes, vtnvacart
+            ORDER BY 
+                mes";
+        $ventas = DB::select($query);
+        return $ventas;
+
+    }
     public function ventasmeses(){
         $query = "SELECT DATE_FORMAT(vtnvaftra, '%Y-%m') AS mes, SUM(vtnvacven) AS total_ventas
                 FROM ventas
