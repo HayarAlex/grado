@@ -54,20 +54,20 @@
                             <td class="text-center">{{$ped->fecha_soli}}</td>
                             @if($ped->dis_state_env == 0)
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-send white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm " title="Envio pendiente"><i class="mdi mdi-send white" ></i></a>
                             </td>
                             @else
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-send white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm " title="Enviado"><i class="mdi mdi-send white" ></i></a>
                             </td>
                             @endif
                             @if($ped->dis_state_ate == 0)
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-bell white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm " title="Atencion pendiente"><i class="mdi mdi-bell white" ></i></a>
                             </td>
                             @else
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-bell-ring white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm " title="Atendido"><i class="mdi mdi-bell-ring white" ></i></a>
                             </td>
                             @endif
                             <td style="width: 10px">

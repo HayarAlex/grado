@@ -101,7 +101,7 @@
                         </div>
                     </div>
 		      		<div style="text-align: right;">
-		              <button id="btn-create" type="submit" class="btn btn-primary mr-2" >Generar</button>
+		              <button id="btn-create" type="button" class="btn btn-primary mr-2" >Generar</button>
 		              <a class="btn btn-light font-weight-medium auth-form-btn" href="{{ route('productType.index') }}">Cancelar</a>
 		            </div>
 	      		</form>
@@ -183,13 +183,26 @@
         ges:gestion
       };
       console.log(obj);
-      axios.post('generate-lote',obj)
+      if (gestion == 0 || mes == 0 || codprod == 0) {
+        $.toast({
+            heading: 'Alerta!',
+            text: 'Datos incompletos.',
+            showHideTransition: 'slide',
+            icon: 'warning',
+            loaderBg: '#f96868',
+            position: 'bottom-right'
+        });
+      }else{
+        axios.post('generate-lote',obj)
         .then(function (response){
           
         })
         .catch(function (error){
 
         });
+        location.reload();
+      }
+      
     }
     
     $('.state-modal').click(function() {

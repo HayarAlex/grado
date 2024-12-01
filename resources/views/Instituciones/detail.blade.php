@@ -80,8 +80,13 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
+                                    @if($pedidos->ins_state_env == 1)
+                                    <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @else
                                     <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmped()" style="color:white">Confirmar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @endif
+                                    
                                 </div>
                             </div>
                         </div>
@@ -91,7 +96,7 @@
         </div>
     </div>
     <div class="col-lg-8 grid-margin">
-        
+        @if($pedidos->ins_state_env == 0)
         <div>
             <div class="card">
                 <div class="card-body" style="padding-bottom:2px;">
@@ -128,6 +133,7 @@
                 </div>
             </div>
         </div><br>
+        @endif
         <div>
             <div class="card">
                 <div class="card-body">
@@ -151,16 +157,22 @@
                             <td class="text-center">{{$detail->ins_cant}}</td>
                             @if($detail->ins_state_ate == 0)
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-bell white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm " title="Pendiente de atencion"><i class="mdi mdi-bell white" ></i></a>
                             </td>
                             @else
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-bell-ring white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm " title="Atendido"><i class="mdi mdi-bell-ring white" ></i></a>
                             </td>
                             @endif
+                            @if($detail->ins_state_ate == 1)
+                            <td class="text-center">
+                                <a class="btn btn-primary btn-sm update-modal" id="br" href="#" ><i class="mdi mdi-border-color white" ></i></a>
+                            </td>
+                            @else
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $detail->detins_id }}" data-state="{{ $detail->ins_state_ate }}" data-name="{{ $detail->ins_cod }}" data-description="{{ $detail->ins_desc }}" data-cantidad="{{ $detail->ins_cant }}" data-idpedido="{{ $detail->ins_ped }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
                             </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
@@ -349,7 +361,7 @@
             });
     }
     function volver() {
-        window.location.href="/Distribucion/"+codigo_uidad;
+        window.location.href="/Institucional/"+codigo_uidad;
     }
     $('.update-modal').click(function() {
         var estado = $(this).data('state'); 

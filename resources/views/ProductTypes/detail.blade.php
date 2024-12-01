@@ -180,7 +180,7 @@
         storealm();
       });
       $('#btn-asignation').on('click', function(){
-        storealm();
+        
       });
     });
     function eliminarRegistro(id) {

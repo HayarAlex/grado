@@ -54,18 +54,18 @@
                             @switch(true)
                                 @case($ped->ins_state_apro == 0)
                                     <td class="text-center">
-                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-clock-alert white" ></i></a>
+                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm " title="Pendiente"><i class="mdi mdi-clock-alert white" ></i></a>
                                     </td>
                                     @break
 
                                 @case($ped->ins_state_apro == 1)
                                     <td class="text-center">
-                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-clock-alert white" ></i></a>
+                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm " title="Aprobado"><i class="mdi mdi-clock-alert white" ></i></a>
                                     </td>
                                     @break
                                 @case($ped->ins_state_apro == 2)
                                     <td class="text-center">
-                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-danger delete-modal btn-sm "><i class="mdi mdi-clock white" ></i></a>
+                                        <a href="#" id="br" style="display: inline-block;" class="btn btn-danger delete-modal btn-sm " title="Rechazado"><i class="mdi mdi-clock white" ></i></a>
                                     </td>
                                     @break
                             @endswitch

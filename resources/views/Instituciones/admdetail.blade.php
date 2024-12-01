@@ -67,8 +67,13 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
+                                    @if($pedidos->ins_state_ate == 1)
+                                    <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @else
                                     <a class="btn btn-success font-weight-small auth-form-btn btn-sm" onclick="confirmaten()" style="color:white">Confirmar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @endif
+                                    
                                 </div>
                             </div>
                         </div>
@@ -117,9 +122,15 @@
                                     </td>
                                     @break
                             @endswitch
+                            @if($detail->ins_state_ate == 1)
+                            <td class="text-center">
+                                <a class="btn btn-primary btn-sm update-modal" id="br" href="#" ><i class="mdi mdi-border-color white" ></i></a>
+                            </td>
+                            @else
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $detail->detins_id }}" data-state="{{ $detail->ins_state_ate }}" data-name="{{ $detail->ins_cod }}" data-description="{{ $detail->ins_desc }}" data-cantidad="{{ $detail->ins_cant }}" data-idpedido="{{ $detail->ins_ped }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
                             </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>

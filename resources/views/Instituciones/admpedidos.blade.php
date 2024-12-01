@@ -53,11 +53,11 @@
                             <td class="text-center">{{$ped->fecha_aten}}</td>
                             @if($ped->ins_state_ate == 0)
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-clock-alert white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm " title="Pendiente"><i class="mdi mdi-clock-alert white" ></i></a>
                             </td>
                             @else
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-clock white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm " title="Aprobado"><i class="mdi mdi-clock white" ></i></a>
                             </td>
                             @endif
                             <td style="width: 10px">

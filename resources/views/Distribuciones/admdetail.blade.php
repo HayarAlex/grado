@@ -108,7 +108,7 @@
 
                                 @case($detail->det_state_ate == 1)
                                     <td class="text-center">
-                                        <div class="badge badge-outline-success">Aprovado</div>
+                                        <div class="badge badge-outline-success">Aprobado</div>
                                     </td>
                                     @break
                                 @case($detail->det_state_ate == 2)

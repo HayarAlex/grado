@@ -67,9 +67,14 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
+                                    @if($pedidos->dis_state_ate == 1)
+                                    <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @else
                                     <a id="confirmButton" class="btn btn-success font-weight-small auth-form-btn btn-sm" style="color:white">Confirmar</a>
                                     <a class="btn btn-danger font-weight-medium auth-form-btn btn-sm" onclick="cancel()" style="color:white">cancelar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @endif
+                                    
                                 </div>
                             </div>
                         </div>
@@ -79,7 +84,8 @@
         </div>
     </div>
     <div class="col-lg-8 grid-margin">
-        
+        @if($pedidos->dis_state_ate == 1)
+        @else
         <div>
             <div class="card">
                 <div class="card-body" style="padding-bottom:2px;">
@@ -116,6 +122,7 @@
                 </div>
             </div>
         </div><br>
+        @endif
         <div>
             <div class="card">
                 <div class="card-body">
@@ -139,16 +146,26 @@
                             <td class="text-center">{{$detail->det_cant}}</td>
                             @if($detail->det_state_ate == 0)
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm "><i class="mdi mdi-bell white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-warning delete-modal btn-sm " title="Pendiente"><i class="mdi mdi-bell white" ></i></a>
+                            </td>
+                            @elseif($detail->det_state_ate == 2)
+                            <td class="text-center">
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-danger delete-modal btn-sm " title="rechazado"><i class="mdi mdi-bell-ring white" ></i></a>
                             </td>
                             @else
                             <td class="text-center">
-                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm "><i class="mdi mdi-bell-ring white" ></i></a>
+                                <a href="#" id="br" style="display: inline-block;" class="btn btn-success delete-modal btn-sm " title="Aprobado"><i class="mdi mdi-bell-ring white" ></i></a>
                             </td>
                             @endif
+                            @if($detail->det_state_ate == 1 || $detail->det_state_ate == 2)
+                            <td class="text-center">
+                                <a class="btn btn-primary btn-sm update-modal" id="br" href="#"><i class="mdi mdi-border-color white" ></i></a>
+                            </td>
+                            @else
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm update-modal" id="br" href="#" data-id="{{ $detail->det_id }}" data-state="{{ $detail->det_state_ate }}" data-name="{{ $detail->det_cod }}" data-description="{{ $detail->det_desc }}" data-cantidad="{{ $detail->det_cant }}" data-idpedido="{{ $detail->det_ped }}" data-toggle="modal" data-target="#exampleModal-3" ><i class="mdi mdi-border-color white" ></i></a>
                             </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
