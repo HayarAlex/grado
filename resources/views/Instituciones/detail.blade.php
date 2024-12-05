@@ -256,6 +256,17 @@
         var selected = combo.options[combo.selectedIndex].text;
         var num = document.getElementById("pat").value;
         var cant = parseInt(num);
+        if (isNaN(cant) || cant < 0) {
+            $.toast({
+                heading: 'Error!',
+                text: 'La cantidad no puede ser negativa o vacía.',
+                showHideTransition: 'slide',
+                icon: 'error',
+                loaderBg: '#f96868',
+                position: 'bottom-right'
+            });
+            return; 
+        }
         var ogfbj ={
             uneg:codigo_uidad,
             pedi:codigo_pedido,

@@ -63,6 +63,7 @@
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.index') }}">Pedidos Sucursal</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.indexadm') }}">Adm de Pedidos</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('distribucion.report') }}">Reportes</a></li>
         </ul>
       </div>
     </li>
@@ -78,6 +79,7 @@
           <li class="nav-item"><a class="nav-link" href="{{ route('institucion.indexadm') }}">Adm de Licitaciones</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('institucion.indexapro') }}">Aprobacion de Licitaciones</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('config.index') }}">Asignacion</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('insititucion.report') }}">Reportes</a></li>
         </ul>
       </div>
     </li>
