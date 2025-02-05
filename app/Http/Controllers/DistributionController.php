@@ -36,7 +36,7 @@ class DistributionController extends Controller
     public function indexadm()
     {
         $unidades = Unegocio::where('uneg_state', 1)
-                    ->orderBy('uneg_id', 'desc')
+                    ->orderBy('uneg_id', 'asc')
                     ->paginate(5);
         return view('Distribuciones.admunit',[
             'unidades' => $unidades
@@ -204,6 +204,8 @@ class DistributionController extends Controller
                 ->groupBy('orders.ord_codp', 'orders.ord_prod')
                 ->select('orders.ord_codp', 'orders.ord_prod', DB::raw('SUM(masters.ma_cantidad) as total'))
                 ->get();
+
+            //validacion si se encutra en el registro maestro y que devuelvva un alerta si no tiene regstro en almacenes
 
             // Verificar si hay resultados y si la cantidad total es mayor que la solicitada
             if ($list->count() > 0) {

@@ -67,9 +67,14 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-sm-12">
+                                    @if($pedidos->dis_state_ate == 1)
+                                    
+                                    <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @else
                                     <a id="confirmButton" class="btn btn-success font-weight-small auth-form-btn btn-sm" style="color:white">Confirmar</a>
                                     <a class="btn btn-danger font-weight-medium auth-form-btn btn-sm" onclick="cancel()" style="color:white">cancelar</a>
                                     <a class="btn btn-primary font-weight-medium auth-form-btn btn-sm" onclick="volver()" style="color:white">Volver</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -78,8 +83,9 @@
             </div>
         </div>
     </div>
+    
     <div class="col-lg-8 grid-margin">
-        
+        @if($pedidos->dis_state_ate != 1)
         <div>
             <div class="card">
                 <div class="card-body" style="padding-bottom:2px;">
@@ -104,7 +110,7 @@
                                     <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label for=""><a style="color: red">*</a>Cantidad:</label>
-                                        <input id="pat" type="number" name="description" class="form-control" placeholder="Ingrese cantidad"/>
+                                        <input id="pat" type="number" name="description" class="form-control" placeholder="Ingrese cantidad" min="1"/>
                                     </div>
                                     </div>
                                 </div>
@@ -116,6 +122,7 @@
                 </div>
             </div>
         </div><br>
+        @endif
         <div>
             <div class="card">
                 <div class="card-body">
@@ -206,7 +213,7 @@
 			            <div class="form-group row">
 			              <div class="col-sm-12">
 			                <label for=""><a style="color: red">*</a>Cantidad:</label>
-			                <input id="modal-cantidad" type="text" name="cantidad" class="form-control" placeholder="Ingrese descripción"/>
+			                <input id="modal-cantidad" type="number" name="cantidad" class="form-control" placeholder="Ingrese descripción" min="1"/>
 			              </div>
 			            </div>
 		            </div>
@@ -266,7 +273,7 @@
         var selected = combo.options[combo.selectedIndex].text;
         var num = document.getElementById("pat").value;
         var cant = parseInt(num);
-        if (isNaN(cant) || cant < 0) {
+        if (isNaN(cant) || cant <= 0 ) {
             $.toast({
                 heading: 'Error!',
                 text: 'La cantidad no puede ser negativa o vacía.',
