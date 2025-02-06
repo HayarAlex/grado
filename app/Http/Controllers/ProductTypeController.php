@@ -21,7 +21,7 @@ class ProductTypeController extends Controller
      */
     public function index()
     {
-        $productTypes = ProductType::orderBy('product_type_id','desc')->paginate(5);
+        $productTypes = ProductType::orderBy('product_type_id','asc')->paginate(5);
         return view('ProductTypes.list',[
             'productTypes' => $productTypes
         ]);

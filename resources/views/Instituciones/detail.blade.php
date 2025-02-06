@@ -268,7 +268,7 @@
         var selected = combo.options[combo.selectedIndex].text;
         var num = document.getElementById("pat").value;
         var cant = parseInt(num);
-        if (isNaN(cant) || cant < 0) {
+        if (isNaN(cant) || cant <= 0) {
             $.toast({
                 heading: 'Error!',
                 text: 'La cantidad no puede ser negativa o vacía.',

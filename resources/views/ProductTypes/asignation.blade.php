@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <label for=""><a style="color: red">*</a>Cantidad Prod:</label>
-                                        <input id="canti" type="text" name="canti" class="form-control" placeholder="Cantidad"/>
+                                        <input id="canti" type="number" name="canti" class="form-control" placeholder="Cantidad"/>
                                     </div>
                                     </div>
                                 </div>

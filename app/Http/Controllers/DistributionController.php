@@ -355,7 +355,7 @@ class DistributionController extends Controller
     public function indexadmins()
     {
         $unidades = Unegocio::where('uneg_state', 1)
-                    ->orderBy('uneg_id', 'desc')
+                    ->orderBy('uneg_id', 'asc')
                     ->paginate(5);
         return view('Instituciones.admunit',[
             'unidades' => $unidades
@@ -446,7 +446,7 @@ class DistributionController extends Controller
     public function indexapro()
     {
         $unidades = Unegocio::where('uneg_state', 1)
-                    ->orderBy('uneg_id', 'desc')
+                    ->orderBy('uneg_id', 'asc')
                     ->paginate(5);
         return view('Instituciones.comunit',[
             'unidades' => $unidades
