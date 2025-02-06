@@ -130,24 +130,36 @@
             fech:fe,
             obse:ob
         };
-        //console.log(obj);
-        axios.post('/Institucional/save/',obj)
-            .then(function (response) {
-                //console.log('ok');
-                $.toast({
-                    heading: 'Operación exitosa!',
-                    text: 'Se agrego el registro correctamente.',
-                    showHideTransition: 'slide',
-                    icon: 'success',
-                    loaderBg: '#f96868',
-                    position: 'bottom-right'
-                })
-                location.reload();
-                //console.log(response.data);
+        
+        if (!obj.un || !obj.ins || !obj.cuc || !obj.fech || !obj.obse) {
+            $.toast({
+                heading: 'Alerta!',
+                text: 'Debe completar los campos.',
+                showHideTransition: 'slide',
+                icon: 'warning',
+                loaderBg: '#f96868',
+                position: 'bottom-right'
             })
-            .catch(function (error){
-                location.reload();
-            });
+        } else {
+            axios.post('/Institucional/save/',obj)
+                .then(function (response) {
+                    //console.log('ok');
+                    $.toast({
+                        heading: 'Operación exitosa!',
+                        text: 'Se agrego el registro correctamente.',
+                        showHideTransition: 'slide',
+                        icon: 'success',
+                        loaderBg: '#f96868',
+                        position: 'bottom-right'
+                    })
+                    location.reload();
+                    //console.log(response.data);
+                })
+                .catch(function (error){
+                    location.reload();
+                });
+        }
+        
     }
 </script>
 @endsection

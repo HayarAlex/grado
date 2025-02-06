@@ -121,7 +121,7 @@
                                     <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label for=""><a style="color: red">*</a>Cantidad:</label>
-                                        <input id="pat" type="text" name="description" class="form-control" placeholder="Ingrese cantidad"/>
+                                        <input id="pat" type="number" name="description" class="form-control" placeholder="Ingrese cantidad"/>
                                     </div>
                                     </div>
                                 </div>
@@ -230,7 +230,7 @@
 			            <div class="form-group row">
 			              <div class="col-sm-12">
 			                <label for=""><a style="color: red">*</a>Cantidad:</label>
-			                <input id="modal-cantidad" type="text" name="cantidad" class="form-control" placeholder="Ingrese descripción"/>
+			                <input id="modal-cantidad" type="number" name="cantidad" class="form-control" placeholder="Ingrese descripción"/>
 			              </div>
 			            </div>
 		            </div>
