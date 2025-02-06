@@ -193,6 +193,14 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('/reporte/excel/{ini}/{fin}', 'OrderController@exportExcel')->name('report.excel');
 
 	Route::get('Maestro-produccion', 'OrderController@indexmaster')->name('maestro.index');
+	//reportes pedidos adicionales
+	Route::get('Reportes_pedidos', 'DistributionController@indexrepo')->name('distribucion.report');
+	Route::get('/pedreporte', 'DistributionController@reportpedido')->name('distribucion.detrep');
+	Route::get('/pedreporte/excel/{ini}/{fin}/{uni}', 'DistributionController@exportExcel')->name('distribucion.excel');
+	//reportes licitaciones
+	Route::get('Reportes_licitaciones', 'DistributionController@indexrepoli')->name('insititucion.report');
+	Route::get('/lireporte', 'DistributionController@reportlici')->name('institucion.detrep');
+	Route::get('/licitareporte/excel/{ini}/{fin}/{uni}', 'DistributionController@exportliExcel')->name('distribucion.excel');
 
 
 	//rutas de dashboard
@@ -201,6 +209,11 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::get('venmes','OrderController@ventasmeses');
 	Route::get('rank','OrderController@ranking');
 	Route::get('/produx','OrderController@prodsele');
+
+	Route::get('/saludo', function () {
+		return 'Hola Mundo';
+	});
+	
 
 	
 });

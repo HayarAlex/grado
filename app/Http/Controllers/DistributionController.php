@@ -11,6 +11,9 @@ use App\InsDetail;
 use App\UserUnit;
 use App\User;
 use App\Master;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PedAdiExport;
+use App\Exports\LiciExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -201,6 +204,8 @@ class DistributionController extends Controller
                 ->groupBy('orders.ord_codp', 'orders.ord_prod')
                 ->select('orders.ord_codp', 'orders.ord_prod', DB::raw('SUM(masters.ma_cantidad) as total'))
                 ->get();
+
+            //validacion si se encutra en el registro maestro y que devuelvva un alerta si no tiene regstro en almacenes
 
             // Verificar si hay resultados y si la cantidad total es mayor que la solicitada
             if ($list->count() > 0) {
@@ -554,6 +559,53 @@ class DistributionController extends Controller
         $query = "select coalesce(count(det_id),0) as vali from dis_details where det_ped = '$id'";
         $list = DB::select($query);
         return $list;
+    }
+
+    public function indexrepo()
+    {
+        $unidades = Unegocio::where('uneg_state', 1)
+        ->orderBy('uneg_id', 'desc')
+        ->get();
+        return view('Distribuciones.report',[
+            'unidades' => $unidades
+        ]);
+    }
+    public function reportpedido(Request $request)
+    {
+        $ini = $request->get('fini');
+        $fin = $request->get('ffin');
+        $uni = $request->get('uni');
+        $query = "select * from distributions join dis_details on det_ped = dis_id where dis_uneg = '$uni' and fecha_soli between '$ini' and '$fin'";
+
+        $list = DB::select($query);
+        return view('Distribuciones.detreport', ['list' => $list,'ini' => $ini,'fin' => $fin,'uni' => $uni]);
+    }
+    public function exportExcel($ini, $fin,$uni)
+    {
+        return Excel::download(new PedAdiExport($ini, $fin,$uni), "reporte_{$ini}_{$fin}.xlsx");
+    }
+    public function indexrepoli()
+    {
+        $unidades = Unegocio::where('uneg_state', 1)
+        ->orderBy('uneg_id', 'desc')
+        ->get();
+        return view('Instituciones.report',[
+            'unidades' => $unidades
+        ]);
+    }
+    public function reportlici(Request $request)
+    {
+        $ini = $request->get('fini');
+        $fin = $request->get('ffin');
+        $uni = $request->get('uni');
+        $query = "select * from institutions join ins_details on ins_ped = ins_ped where institutions.ins_uneg = '$uni' and fecha_soli between '$ini' and '$fin' order by ins_id asc";
+
+        $list = DB::select($query);
+        return view('Instituciones.detreport', ['list' => $list,'ini' => $ini,'fin' => $fin,'uni' => $uni]);
+    }
+    public function exportliExcel($ini, $fin,$uni)
+    {
+        return Excel::download(new LiciExport($ini, $fin,$uni), "reporte_{$ini}_{$fin}.xlsx");
     }
 
 }
