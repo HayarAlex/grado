@@ -10,6 +10,7 @@ use App\Product;
 use App\ProductAsig;
 use App\TypeDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt; 
 
 class ProductTypeController extends Controller
@@ -164,10 +165,16 @@ class ProductTypeController extends Controller
         $prodtypes = ProductType::findOrFail($id);
         $productos = Product::all();
         $proasignate = ProductAsig::where('proasig_idlinea',$id)->paginate(4);
+        $query ="SELECT * 
+                FROM products 
+                LEFT JOIN product_asignates ON products.prod_cod = product_asignates.proasig_code
+                WHERE product_asignates.proasig_code IS NULL";
+        $list = DB::select($query);
         return view('ProductTypes.asignation',[
             'tipos' => $prodtypes,
             'productos' => $productos,
-            'proasignate' => $proasignate
+            'proasignate' => $proasignate,
+            'lista' => $list
         ]);
         
     }

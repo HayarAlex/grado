@@ -42,7 +42,7 @@
                                         <label for=""><a style="color: red">*</a>Seleccionar producto:</label>
                                         <select id="prod" name="prod" class="js-example-basic-single w-100">
                                             <option value="0">Seleccione un producto</option>
-                                            @foreach($productos as $prod)
+                                            @foreach($lista as $prod)
                                                 <option value="{{ $prod->prod_cod}}">{{ $prod->prod_desc }}</option>
                                             @endforeach
                                         </select>
