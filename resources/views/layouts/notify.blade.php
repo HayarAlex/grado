@@ -108,7 +108,7 @@
         resetToastPosition();
         $.toast({
             heading: 'Sin Stock',
-            text: 'No hay suficiente stock para realizar la operación.',
+            text: 'No hay suficiente stock para realizar la operación. Stock actual: {{ session('stockActual') }}',
             showHideTransition: 'slide',
             icon: 'error',
             loaderBg: '#f96868',

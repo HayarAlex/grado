@@ -238,7 +238,8 @@ class DistributionController extends Controller
                     return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status', 'Actualizado');
                 } else {
                     // No hay suficiente stock
-                    return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status', 'SinStock');
+                    $stockActual = $list[0]->total;
+                    return redirect('/AdminDistribucion/Detalle/'.$pedido)->with('status', 'SinStock')->with('stockActual', $stockActual);
                 }
             }
 
@@ -431,7 +432,8 @@ class DistributionController extends Controller
                     
                     return redirect('/AdminInsti/Detalle/'.$pedido)->with('status', 'Actualizado');
                 } else {
-                    return redirect('/AdminInsti/Detalle/'.$pedido)->with('status', 'SinStock');
+                    $stockActual = $list[0]->total;
+                    return redirect('/AdminInsti/Detalle/'.$pedido)->with('status', 'SinStock')->with('stockActual', $stockActual);
                 }
             }
         
