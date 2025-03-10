@@ -169,6 +169,8 @@ class DistributionController extends Controller
         $dis->det_state_apro = 0;
         $dis->det_fecha_ate = date('Y-m-d');
         $dis->det_fecha_apro = date('Y-m-d');
+        $dis->dosis = $request->dos;
+        $dis->det_pres = $request->pre;
         $dis->save();
         return DisDetail::orderBy("det_id")->where('det_ped',$request->pedi)->get();
     }
@@ -608,6 +610,12 @@ class DistributionController extends Controller
     public function exportliExcel($ini, $fin,$uni)
     {
         return Excel::download(new LiciExport($ini, $fin,$uni), "reporte_{$ini}_{$fin}.xlsx");
+    }
+
+    public function complement($id){
+        
+        $list = Product::where('prod_cod',$id)->get();
+        return $list;
     }
 
 }

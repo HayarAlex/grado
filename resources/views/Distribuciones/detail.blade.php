@@ -93,20 +93,36 @@
                     <form action="" enctype="multipart/from-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-3">
                                     <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label for=""><a style="color: red">*</a>Seleccionar producto:</label>
                                         <select id="prod" name="prod" class="js-example-basic-single w-100">
                                             <option value="0">Seleccione un producto</option>
                                             @foreach($productos as $prod)
-                                                <option value="{{ $prod->prod_cod}}">{{ $prod->prod_desc }}</option>
+                                                <option value="{{ $prod->prod_cod}}">{{ $prod->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <label for=""><a style="color: red">*</a>Dosis:</label>
+                                        <input id="dosis" type="text" name="description" class="form-control" placeholder="Ingrese cantidad" disabled/>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <label for=""><a style="color: red">*</a>Presentacion:</label>
+                                        <input id="pres" type="text" name="description" class="form-control" placeholder="Ingrese cantidad" disabled/>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label for=""><a style="color: red">*</a>Cantidad:</label>
@@ -133,6 +149,8 @@
                             <tr>
                             <th class="text-center">Codigo</th>
                             <th class="text-center">Descripción</th>
+                            <th class="text-center">Dosis</th>
+                            <th class="text-center">Presentacion</th>
                             <th class="text-center">Cantidad</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center">Acciones</th>
@@ -143,6 +161,8 @@
                         <tr>
                             <td class="text-center">{{$detail->det_cod}}</td>
                             <td class="text-center">{{$detail->det_desc}}</td>
+                            <td class="text-center">{{$detail->dosis}}</td>
+                            <td class="text-center">{{$detail->det_pres}}</td>
                             <td class="text-center">{{$detail->det_cant}}</td>
                             @if($detail->det_state_ate == 0)
                             <td class="text-center">
@@ -251,6 +271,30 @@
 <script src="../../../../js/typeahead.js"></script>
 <script src="../../../../js/select2.js"></script>
 <script>
+    $(document).ready(function () {
+        $("#prod").change(function () {
+            let selectedValue = $(this).val();
+            let selectedText = $("#prod option:selected").text();
+            
+            console.log("Producto seleccionado:", selectedValue, "-", selectedText);
+            searchprod(selectedValue);
+        });
+    });
+    function searchprod(value) {
+        if (value === "0") {
+            console.log("Ningún producto seleccionado");
+            return;
+        }
+        axios.get('/Distribucion/adition/'+value)
+            .then(function (response){
+                console.log(response.data);
+                document.getElementById("pres").value = response.data[0].presentacion;
+                document.getElementById("dosis").value = response.data[0].dosis;
+            })
+            .then(function(){
+
+            });
+    }
     var codigo_uidad = {{ $unidades->uneg_id}};
     var codigo_pedido = {{ $pedidos->dis_id}};
     //console.log(codigo_uidad);
@@ -279,6 +323,8 @@
     
     function senddet() {
         var codigo = document.getElementById("prod").value;
+        var dosisd = document.getElementById("dosis").value;
+        var present = document.getElementById("pres").value;
         var combo = document.getElementById("prod");
         var selected = combo.options[combo.selectedIndex].text;
         var num = document.getElementById("pat").value;
@@ -299,7 +345,9 @@
             pedi:codigo_pedido,
             cod:codigo,
             des:selected,
-            can:cant
+            can:cant,
+            dos:dosisd,
+            pre:present
         };
         axios.post('/Distribucion/savedet/', ogfbj)
             .then(function (response) {
